@@ -1,4 +1,4 @@
-# SmirnovLang v0.2.0
+# SmirnovLang v0.3.0
 
 <img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/master/logo.png" alt="SmirnovLang Logo" width="200"/>
 
@@ -14,6 +14,7 @@ SmirnovLang объединяет лучшие идеи из существующ
 2. **SQL-like Queries** — запросы к коллекциям: `select * from users where age > 18 order by name`
 3. **Live Contracts (живые контракты)** — контракты с авто-исправлением: `ensure x > 0, fix: x = 1`
 4. **Pipeline Assignment** — присваивание через pipe: `data |> filter() |> into result`
+5. **Auto-Memoization** — `memo fn fib(n) { ... }` автоматически кэширует результаты
 
 ### Дополнительные фичи
 
@@ -48,6 +49,12 @@ fn process(x) -> f64
 // 4. Pipeline Assignment (присваивание через pipe)
 data |> filter(x => x > 0) |> into positiveData;
 numbers |> map(x => x * 2) |> into doubled;
+
+// 5. Auto-Memoization (автоматическое кэширование)
+memo fn fib(n) {
+    if n <= 1 { return n; }
+    return fib(n - 1) + fib(n - 2);
+}
 
 // === ДРУГИЕ ФИЧИ ===
 

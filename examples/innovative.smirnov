@@ -120,6 +120,37 @@ fn demoPipelineAssign() {
 }
 
 // ============================================
+// 5. AUTO-MEMOIZATION
+// ============================================
+// Functions with memo automatically cache their results
+
+memo fn fib(n: int) -> int {
+    if n <= 1 {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+// Without memo this would be exponential!
+// With memo it's O(n)
+
+fn demoMemoization() {
+    println("\n=== Memoization Demo ===");
+    
+    // First call - computes and caches
+    let t1 = fib(10);
+    println("fib(10) = " + t1);
+    
+    // Second call with same arg - from cache!
+    let t2 = fib(10);
+    println("fib(10) again = " + t2 + " (from cache)");
+    
+    // Different arg - computes new value
+    let t3 = fib(15);
+    println("fib(15) = " + t3);
+}
+
+// ============================================
 // MAIN
 // ============================================
 
@@ -131,6 +162,7 @@ fn main() {
     demoQueries();
     demoContracts();
     demoPipelineAssign();
+    demoMemoization();
     
     println("\nAll demos completed!");
 }

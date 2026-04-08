@@ -95,8 +95,13 @@ private:
         if (match({TokenType::LET, TokenType::MUT})) {
             return parseLetStatement();
         }
-        if (match({TokenType::FN})) {
-            return parseFnStatement();
+        if (match({TokenType::FN, TokenType::MEMO})) {
+            bool isMemo = previous().type == TokenType::MEMO;
+            auto fnStmt = parseFnStatement();
+            if (fnStmt) {
+                dynamic_cast<FnStmt*>(fnStmt.get())->isMemo = isMemo;
+            }
+            return fnStmt;
         }
         if (match({TokenType::STRUCT})) {
             return parseStructStatement();

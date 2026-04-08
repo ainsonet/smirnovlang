@@ -72,6 +72,8 @@ struct FnValue {
     std::shared_ptr<Type> returnType;
     std::vector<FnStmt::Contract> contracts;
     std::shared_ptr<std::unordered_map<std::string, Value>> captures;
+    bool isMemo = false;
+    std::unordered_map<std::string, Value> memoCache;  // кэш для memoized функций
 };
 
 struct ClosureValue {

@@ -106,6 +106,7 @@ private:
             {"if", TokenType::IF}, {"else", TokenType::ELSE}, {"match", TokenType::MATCH},
             {"for", TokenType::FOR}, {"while", TokenType::WHILE}, {"return", TokenType::RETURN},
             {"require", TokenType::REQUIRE}, {"ensure", TokenType::ENSURE}, {"fix", TokenType::FIX},
+            {"memo", TokenType::MEMO},
             {"parallel", TokenType::PARALLEL}, {"concurrent", TokenType::CONCURRENT},
             {"true", TokenType::TRUE}, {"false", TokenType::FALSE}, {"null", TokenType::NULLPTR},
             {"pub", TokenType::PUB}, {"mod", TokenType::MOD}, {"use", TokenType::USE},

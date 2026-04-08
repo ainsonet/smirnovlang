@@ -204,6 +204,7 @@ struct FnStmt : Stmt {
     std::vector<std::pair<std::string, std::shared_ptr<Type>>> params;
     std::shared_ptr<Type> returnType;
     std::vector<StmtPtr> body;
+    bool isMemo = false;  // автоматическое кэширование результатов
     
     // Contracts
     struct Contract {

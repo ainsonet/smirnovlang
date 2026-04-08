@@ -237,6 +237,7 @@ void VM::executeBlock(const std::vector<StmtPtr>& statements) {
             fnVal.fnVal->body = fnStmt->body;
             fnVal.fnVal->returnType = fnStmt->returnType;
             fnVal.fnVal->contracts = fnStmt->contracts;
+            fnVal.fnVal->isMemo = fnStmt->isMemo;
             
             globalEnv[fnStmt->name] = fnVal;
         }
@@ -490,6 +491,21 @@ Value VM::evaluate(Expr* expr) {
 }
 
 Value VM::executeFn(FnValue* fn, const std::vector<Value>& args) {
+    // Check memoization cache
+    if (fn->isMemo) {
+        // Build cache key from args
+        std::string cacheKey;
+        for (const auto& arg : args) {
+            cacheKey += arg.toString() + "|";
+        }
+        
+        auto it = fn->memoCache.find(cacheKey);
+        if (it != fn->memoCache.end()) {
+            // Return cached result
+            return it->second.clone();
+        }
+    }
+    
     pushScope();
     
     for (size_t i = 0; i < fn->params.size() && i < args.size(); ++i) {
@@ -536,6 +552,16 @@ Value VM::executeFn(FnValue* fn, const std::vector<Value>& args) {
     }
     
     popScope();
+    
+    // Save to memo cache
+    if (fn->isMemo) {
+        std::string cacheKey;
+        for (const auto& arg : args) {
+            cacheKey += arg.toString() + "|";
+        }
+        fn->memoCache[cacheKey] = result_.clone();
+    }
+    
     return result_;
 }
 

@@ -9,7 +9,7 @@ namespace smirnovlang {
 enum class TokenType {
     // Keywords
     FN, LET, MUT, IF, ELSE, MATCH, FOR, WHILE, RETURN,
-    REQUIRE, ENSURE, PARALLEL, CONCURRENT, FIX,
+    REQUIRE, ENSURE, PARALLEL, CONCURRENT, FIX, MEMO,
     TRUE, FALSE, NULLPTR,
     PUB, MOD, USE, STRUCT, ENUM, CLASS, IMPORT,
 
