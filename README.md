@@ -13,6 +13,7 @@ SmirnovLang объединяет лучшие идеи из существующ
 1. **Scoped Variables (исчезающие переменные)** — `let! name = value` автоматически удаляется после выхода из блока
 2. **SQL-like Queries** — запросы к коллекциям: `select * from users where age > 18 order by name`
 3. **Live Contracts (живые контракты)** — контракты с авто-исправлением: `ensure x > 0, fix: x = 1`
+4. **Pipeline Assignment** — присваивание через pipe: `data |> filter() |> into result`
 
 ### Дополнительные фичи
 
@@ -43,6 +44,10 @@ fn process(x) -> f64
 {
     return x * 2;
 }
+
+// 4. Pipeline Assignment (присваивание через pipe)
+data |> filter(x => x > 0) |> into positiveData;
+numbers |> map(x => x * 2) |> into doubled;
 
 // === ДРУГИЕ ФИЧИ ===
 

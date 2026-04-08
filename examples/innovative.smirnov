@@ -87,6 +87,39 @@ fn demoContracts() {
 }
 
 // ============================================
+// 4. PIPELINE ASSIGNMENT
+// ============================================
+// Direct assignment through pipeline: |> into result
+
+fn demoPipelineAssign() {
+    println("\n=== Pipeline Assignment Demo ===");
+    
+    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    
+    // Instead of: let result = numbers |> filter() |> sum();
+    // You can write: numbers |> filter(x => x > 3) |> into result
+    
+    numbers 
+        |> filter(x => x > 3)
+        |> map(x => x * 2)
+        |> into doubledNumbers;
+    
+    println("Doubled > 3: " + doubledNumbers);
+    
+    // Chain multiple assignments
+    [1, 2, 3, 4, 5]
+        |> filter(x => x % 2 == 0)
+        |> into evens;
+    
+    evens
+        |> map(x => x * 10)
+        |> into tens;
+    
+    println("Evens: " + evens);
+    println("Tens: " + tens);
+}
+
+// ============================================
 // MAIN
 // ============================================
 
@@ -97,6 +130,7 @@ fn main() {
     demoScoped();
     demoQueries();
     demoContracts();
+    demoPipelineAssign();
     
     println("\nAll demos completed!");
 }

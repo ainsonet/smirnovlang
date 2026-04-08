@@ -68,6 +68,30 @@ private:
 
     // Statement parsing
     StmtPtr parseStatement() {
+        // Check for pipeline assignment: expr |> into varName
+        if (check(TokenType::IDENT) || check(TokenType::LPAREN) || check(TokenType::LBRACKET) || check(TokenType::INTEGER) || check(TokenType::STRING)) {
+            // Look ahead for |> into
+            size_t savedPos = current_;
+            auto expr = parseExpression();
+            if (match({TokenType::PIPE_ARROW})) {
+                if (match({TokenType::INTO}) || match({TokenType::IDENT})) {
+                    // Check if it's "into" keyword
+                    bool isInto = previous().type == TokenType::INTO || std::get<std::string>(previous().value) == "into";
+                    if (isInto) {
+                        if (check(TokenType::IDENT)) {
+                            auto stmt = std::make_unique<PipeAssignStmt>();
+                            stmt->pipeline = std::move(expr);
+                            stmt->varName = std::get<std::string>(advance().value);
+                            match({TokenType::SEMICOLON});
+                            return stmt;
+                        }
+                    }
+                }
+            }
+            // Not a pipe assignment, restore position
+            current_ = savedPos;
+        }
+        
         if (match({TokenType::LET, TokenType::MUT})) {
             return parseLetStatement();
         }

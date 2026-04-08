@@ -243,6 +243,11 @@ void VM::executeBlock(const std::vector<StmtPtr>& statements) {
         else if (auto* exprStmt = dynamic_cast<ExprStmt*>(stmt.get())) {
             result_ = evaluate(exprStmt->expr.get());
         }
+        else if (auto* pipeAssign = dynamic_cast<PipeAssignStmt*>(stmt.get())) {
+            // Evaluate pipeline and assign to variable
+            Value result = evaluate(pipeAssign->pipeline.get());
+            scopes.back()[pipeAssign->varName] = result;
+        }
         else if (auto* retStmt = dynamic_cast<ReturnStmt*>(stmt.get())) {
             if (retStmt->value) {
                 result_ = evaluate(retStmt->value.get());

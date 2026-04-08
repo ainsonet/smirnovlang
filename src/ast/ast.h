@@ -162,6 +162,12 @@ struct AssignStmt : Stmt {
     ExprPtr value;
 };
 
+// Pipeline assignment: expr |> into varName
+struct PipeAssignStmt : Stmt {
+    ExprPtr pipeline;  // left side of |>
+    std::string varName;
+};
+
 struct BlockStmt : Stmt {
     std::vector<StmtPtr> statements;
 };
