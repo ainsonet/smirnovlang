@@ -1,6 +1,6 @@
 # SmirnovLang
 
-<img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/main/logo.png" alt="SmirnovLang Logo" width="200"/>
+<img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/master/logo.png" alt="SmirnovLang Logo" width="200"/>
 
 Современный язык программирования общего назначения с инновационными возможностями.
 
