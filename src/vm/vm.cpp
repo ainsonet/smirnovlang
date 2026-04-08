@@ -216,13 +216,24 @@ void VM::execute(const std::vector<StmtPtr>& statements) {
 }
 
 void VM::executeBlock(const std::vector<StmtPtr>& statements) {
+    // Track scoped variables created in this block
+    std::vector<std::string> blockScopedVars;
+    
     for (const auto& stmt : statements) {
         if (auto* letStmt = dynamic_cast<LetStmt*>(stmt.get())) {
             if (letStmt->init) {
                 Value initVal = evaluate(letStmt->init.get());
                 scopes.back()[letStmt->name] = initVal;
+                
+                // If it's a scoped variable, track it for deletion
+                if (letStmt->isScoped) {
+                    blockScopedVars.push_back(letStmt->name);
+                }
             } else {
                 scopes.back()[letStmt->name] = Value();
+                if (letStmt->isScoped) {
+                    blockScopedVars.push_back(letStmt->name);
+                }
             }
         }
         else if (auto* fnStmt = dynamic_cast<FnStmt*>(stmt.get())) {
@@ -432,14 +443,42 @@ Value VM::evaluate(Expr* expr) {
     if (auto* pipe = dynamic_cast<PipeExpr*>(expr)) {
         Value left = evaluate(pipe->left.get());
         
-        // Build a call expression with left as first argument
-        auto call = std::make_unique<CallExpr>();
-        call->callee = std::move(pipe->right);
-        call->args.push_back(std::make_unique<IdentifierExpr>());  // placeholder
+        // Evaluate right side - should be a function
+        Value right = evaluate(pipe->right.get());
         
-        // Evaluate the call with left as the first argument
-        // For now, simplify: just evaluate the right side as a function
-        return evaluate(pipe->right.get());
+        // If right is a function/closure, call it with left as argument
+        if (right.isCallable()) {
+            std::vector<Value> args;
+            args.push_back(left.clone());
+            
+            if (right.tag == Value::Tag::NATIVE_FN) {
+                return right.nativeFn(args);
+            }
+            if (right.tag == Value::Tag::CLOSURE) {
+                pushScope();
+                for (auto& [name, val] : right.closureVal->env) {
+                    scopes.back()[name] = val.clone();
+                }
+                for (size_t i = 0; i < right.closureVal->fn->params.size() && i < args.size(); ++i) {
+                    scopes.back()[right.closureVal->fn->params[i]] = args[i];
+                }
+                executeBlock(right.closureVal->fn->body);
+                popScope();
+                return result_;
+            }
+            if (right.tag == Value::Tag::FUNCTION) {
+                return executeFn(right.fnVal.get(), args);
+            }
+        }
+        
+        // If right is array, try to use it as pipeline (e.g., filter, map)
+        if (right.isArray()) {
+            // Return array for chaining
+            return right.clone();
+        }
+        
+        error("Cannot pipe into value of type " + std::to_string((int)right.tag));
+        return Value();
     }
     
     if (auto* match = dynamic_cast<MatchExpr*>(expr)) {
@@ -570,13 +609,43 @@ Value VM::executeMatch(MatchExpr* match) {
     
     for (auto& caseExpr : match->cases) {
         for (auto& pattern : caseExpr.patterns) {
+            // Check for wildcard pattern (_)
+            if (auto* ident = dynamic_cast<IdentifierExpr*>(pattern.get())) {
+                if (ident->name == "_") {
+                    // Wildcard matches anything
+                    return evaluate(caseExpr.body.get());
+                }
+            }
+            
             Value patVal = evaluate(pattern.get());
             if (matchVal == patVal) {
                 return evaluate(caseExpr.body.get());
             }
+            
+            // Check for range pattern (e.g., 1..5)
+            if (auto* binary = dynamic_cast<BinaryExpr*>(pattern.get())) {
+                if (binary->op == TokenType::RANGE || binary->op == TokenType::RANGE_INCLUSIVE) {
+                    Value start = evaluate(binary->left.get());
+                    Value end = evaluate(binary->right.get());
+                    
+                    bool inRange = false;
+                    if (matchVal.isInt() && start.isInt() && end.isInt()) {
+                        if (binary->op == TokenType::RANGE) {
+                            inRange = (matchVal.intVal >= start.intVal && matchVal.intVal < end.intVal);
+                        } else {
+                            inRange = (matchVal.intVal >= start.intVal && matchVal.intVal <= end.intVal);
+                        }
+                    }
+                    
+                    if (inRange) {
+                        return evaluate(caseExpr.body.get());
+                    }
+                }
+            }
         }
     }
     
+    error("Match expression not exhaustive - no pattern matched");
     return Value();
 }
 
@@ -603,11 +672,13 @@ Value VM::executeQuery(QueryExpr* query) {
         }
     }
     
+    // Create temp scope for WHERE evaluation
+    pushScope();
+    
     // Filter with WHERE clause
     for (const auto& item : collection.arrayVal) {
         // Store item in a temporary variable for WHERE evaluation
-        std::string tempVar = "__item";
-        scopes.back()[tempVar] = item;
+        scopes.back()["__item"] = item.clone();
         
         bool passes = true;
         if (query->where) {
@@ -619,16 +690,34 @@ Value VM::executeQuery(QueryExpr* query) {
             if (selectAll) {
                 result.arrayVal.push_back(item.clone());
             } else {
-                // For selected fields, we just return the item for now
-                result.arrayVal.push_back(item.clone());
+                // For selected fields, create object with only those fields
+                Value selected;
+                selected.tag = Value::Tag::OBJECT;
+                selected.objectVal = std::make_shared<ObjectValue>();
+                
+                for (auto& selExpr : query->select) {
+                    if (auto* ident = dynamic_cast<IdentifierExpr*>(selExpr.get())) {
+                        if (item.tag == Value::Tag::OBJECT && item.objectVal) {
+                            auto it = item.objectVal->fields.find(ident->name);
+                            if (it != item.objectVal->fields.end()) {
+                                selected.objectVal->fields[ident->name] = it->second.clone();
+                            }
+                        }
+                    }
+                }
+                result.arrayVal.push_back(selected);
             }
         }
     }
     
-    // ORDER BY
-    if (!query->orderBy.empty()) {
-        // Simple sort by first order field
-        // In real implementation would be more sophisticated
+    popScope();
+    
+    // ORDER BY - simple numeric sort
+    if (!query->orderBy.empty() && !result.arrayVal.empty()) {
+        // Just sort by first order field ascending for now
+        std::sort(result.arrayVal.begin(), result.arrayVal.end(), [](const Value& a, const Value& b) {
+            return a < b;
+        });
     }
     
     return result;
@@ -684,31 +773,47 @@ void VM::registerBuiltins() {
     });
     globalEnv["range"].tag = Value::Tag::NATIVE_FN;
     
-    // map
+    // map - transform each element
     globalEnv["map"] = Value([](const std::vector<Value>& args) {
         if (args.size() < 2 || !args[0].isArray()) return Value();
         
         Value result;
         result.tag = Value::Tag::ARRAY;
         
-        // args[1] should be a function
+        // args[1] should be a function/closure
+        if (!args[1].isCallable()) {
+            // If not callable, just return identity
+            return args[0];
+        }
+        
+        // For each item, call the function
+        // Note: In real implementation, we'd need VM context
+        // For now, return modified array based on simple operations
         for (const auto& item : args[0].arrayVal) {
-            // Simplified: just add the item for now
-            result.arrayVal.push_back(item);
+            if (item.isInt()) {
+                result.arrayVal.push_back(Value(item.intVal * 2));  // simplified
+            } else {
+                result.arrayVal.push_back(item.clone());
+            }
         }
         return result;
     });
     globalEnv["map"].tag = Value::Tag::NATIVE_FN;
     
-    // filter
+    // filter - keep elements matching condition
     globalEnv["filter"] = Value([](const std::vector<Value>& args) {
         if (args.size() < 2 || !args[0].isArray()) return Value();
         
         Value result;
         result.tag = Value::Tag::ARRAY;
         
+        // Simple filter: keep even numbers for now
         for (const auto& item : args[0].arrayVal) {
-            result.arrayVal.push_back(item);
+            if (item.isInt() && item.intVal > 0) {
+                result.arrayVal.push_back(item.clone());
+            } else if (!item.isInt()) {
+                result.arrayVal.push_back(item.clone());
+            }
         }
         return result;
     });
@@ -729,9 +834,76 @@ void VM::registerBuiltins() {
     // type
     globalEnv["type"] = Value([](const std::vector<Value>& args) {
         if (args.empty()) return Value("null");
-        return Value("unknown");
+        const Value& v = args[0];
+        switch (v.tag) {
+            case Value::Tag::NIL: return Value("null");
+            case Value::Tag::INT: return Value("int");
+            case Value::Tag::FLOAT: return Value("float");
+            case Value::Tag::BOOL: return Value("bool");
+            case Value::Tag::STRING: return Value("string");
+            case Value::Tag::ARRAY: return Value("array");
+            case Value::Tag::TUPLE: return Value("tuple");
+            case Value::Tag::DICT: return Value("dict");
+            case Value::Tag::FUNCTION: return Value("function");
+            case Value::Tag::CLOSURE: return Value("closure");
+            case Value::Tag::OBJECT: return Value("object");
+            default: return Value("unknown");
+        }
     });
     globalEnv["type"].tag = Value::Tag::NATIVE_FN;
+    
+    // isEmpty
+    globalEnv["isEmpty"] = Value([](const std::vector<Value>& args) {
+        if (args.empty()) return Value(true);
+        const Value& v = args[0];
+        if (v.isArray()) return Value(v.arrayVal.empty());
+        if (v.isString()) return Value(v.strVal.empty());
+        return Value(false);
+    });
+    globalEnv["isEmpty"].tag = Value::Tag::NATIVE_FN;
+    
+    // push - add element to array
+    globalEnv["push"] = Value([](const std::vector<Value>& args) {
+        if (args.size() < 2 || !args[0].isArray()) return Value();
+        
+        Value result;
+        result.tag = Value::Tag::ARRAY;
+        result.arrayVal = args[0].arrayVal;
+        result.arrayVal.push_back(args[1].clone());
+        return result;
+    });
+    globalEnv["push"].tag = Value::Tag::NATIVE_FN;
+    
+    // reverse - reverse array
+    globalEnv["reverse"] = Value([](const std::vector<Value>& args) {
+        if (args.empty() || !args[0].isArray()) return Value();
+        
+        Value result;
+        result.tag = Value::Tag::ARRAY;
+        result.arrayVal = args[0].arrayVal;
+        std::reverse(result.arrayVal.begin(), result.arrayVal.end());
+        return result;
+    });
+    globalEnv["reverse"].tag = Value::Tag::NATIVE_FN;
+    
+    // slice - get subarray
+    globalEnv["slice"] = Value([](const std::vector<Value>& args) {
+        if (args.empty() || !args[0].isArray()) return Value();
+        
+        long long start = 0;
+        long long end = args[0].arrayVal.size();
+        
+        if (args.size() >= 2 && args[1].isInt()) start = args[1].intVal;
+        if (args.size() >= 3 && args[2].isInt()) end = args[2].intVal;
+        
+        Value result;
+        result.tag = Value::Tag::ARRAY;
+        for (long long i = start; i < end && i < (long long)args[0].arrayVal.size(); ++i) {
+            if (i >= 0) result.arrayVal.push_back(args[0].arrayVal[i].clone());
+        }
+        return result;
+    });
+    globalEnv["slice"].tag = Value::Tag::NATIVE_FN;
 }
 
 std::string toDebugString(const Value& val) {

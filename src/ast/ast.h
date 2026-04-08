@@ -170,6 +170,7 @@ struct PipeAssignStmt : Stmt {
 
 struct BlockStmt : Stmt {
     std::vector<StmtPtr> statements;
+    std::vector<std::string> scopedVars;  // переменные для автоматического удаления
 };
 
 struct IfStmt : Stmt {

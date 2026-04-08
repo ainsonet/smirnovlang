@@ -112,6 +112,7 @@ private:
             {"pub", TokenType::PUB}, {"mod", TokenType::MOD}, {"use", TokenType::USE},
             {"struct", TokenType::STRUCT}, {"enum", TokenType::ENUM},
             {"class", TokenType::CLASS}, {"import", TokenType::IMPORT},
+            {"in", TokenType::IN},
             // SQL-like query keywords
             {"select", TokenType::SELECT}, {"from", TokenType::FROM}, {"where", TokenType::WHERE},
             {"order", TokenType::ORDER}, {"by", TokenType::BY}, {"group", TokenType::GROUP}, {"into", TokenType::INTO},
