@@ -1,4 +1,4 @@
-# SmirnovLang
+# SmirnovLang v0.2.0
 
 <img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/master/logo.png" alt="SmirnovLang Logo" width="200"/>
 
