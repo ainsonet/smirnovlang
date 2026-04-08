@@ -148,19 +148,45 @@ private:
         bool isMutable = previous().type == TokenType::MUT;
         bool isScoped = false;
         
-        // Check for scoped variable (let!)
+        // Check for scoped variable - lookahead for ! after let/mut
+        // Save position
+        size_t savedPos = current_;
+        
+        // Check if next is ! (as a separate token or part of identifier)
         if (check(TokenType::IDENT)) {
             std::string ident = std::get<std::string>(peek().value);
             if (!ident.empty() && ident[0] == '!') {
+                // It's "let!name" - extract name without !
                 isScoped = true;
-                advance(); // consume !
-                // Get actual variable name
-                if (!check(TokenType::IDENT)) {
-                    error("Expected variable name after '!'");
-                    return nullptr;
+                // Get name without !
+                std::string fullName = std::get<std::string>(advance().value);
+                std::string varName = fullName.substr(1);  // remove !
+                
+                // Now parse the rest
+                std::shared_ptr<Type> type = nullptr;
+                if (match({TokenType::COLON})) {
+                    type = parseType();
                 }
+                
+                ExprPtr init = nullptr;
+                if (match({TokenType::EQ})) {
+                    init = parseExpression();
+                }
+                
+                match({TokenType::SEMICOLON});
+                
+                auto stmt = std::make_unique<LetStmt>();
+                stmt->name = varName;
+                stmt->isMutable = isMutable;
+                stmt->isScoped = isScoped;
+                stmt->type = type;
+                stmt->init = std::move(init);
+                return stmt;
             }
         }
+        
+        // Not a scoped variable, restore and continue normally
+        current_ = savedPos;
         
         if (!check(TokenType::IDENT)) {
             error("Expected variable name after let/mut");

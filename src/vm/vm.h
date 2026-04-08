@@ -119,8 +119,10 @@ private:
     // Helper methods
     void pushScope();
     void popScope();
+    void popScopeWithCleanup(std::vector<std::string> scopedVars);
     Value* getVar(const std::string& name);
     void setVar(const std::string& name, const Value& value);
+    void removeVar(const std::string& name);
     
     // Execution helpers
     void executeBlock(const std::vector<StmtPtr>& statements);

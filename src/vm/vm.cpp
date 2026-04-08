@@ -172,6 +172,25 @@ void VM::popScope() {
     }
 }
 
+void VM::popScopeWithCleanup(std::vector<std::string> scopedVars) {
+    // Remove scoped variables before popping scope
+    if (!scopes.empty()) {
+        for (const auto& varName : scopedVars) {
+            scopes.back().erase(varName);
+        }
+        scopes.pop_back();
+    }
+}
+
+void VM::removeVar(const std::string& name) {
+    // Remove from innermost scope
+    if (!scopes.empty()) {
+        scopes.back().erase(name);
+    }
+    // Also check global
+    globalEnv.erase(name);
+}
+
 Value* VM::getVar(const std::string& name) {
     // Search from innermost to outermost
     for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
@@ -235,6 +254,33 @@ void VM::executeBlock(const std::vector<StmtPtr>& statements) {
                     blockScopedVars.push_back(letStmt->name);
                 }
             }
+        }
+        
+        // Also check nested blocks for scoped variables
+        if (auto* block = dynamic_cast<BlockStmt*>(stmt.get())) {
+            // Recursively collect scoped vars from nested blocks
+            std::function<void(const StmtPtr&, std::vector<std::string>&)> collect = 
+                [&](const StmtPtr& s, std::vector<std::string>& vars) {
+                    if (auto* let = dynamic_cast<LetStmt*>(s.get())) {
+                        if (let->isScoped) vars.push_back(let->name);
+                    }
+                    if (auto* b = dynamic_cast<BlockStmt*>(s.get())) {
+                        for (auto& bs : b->statements) {
+                            collect(bs, vars);
+                        }
+                    }
+                    if (auto* ifs = dynamic_cast<IfStmt*>(s.get())) {
+                        if (ifs->thenBranch) collect(ifs->thenBranch, vars);
+                        if (ifs->elseBranch) collect(ifs->elseBranch, vars);
+                    }
+                    if (auto* forS = dynamic_cast<ForStmt*>(s.get())) {
+                        if (forS->body) collect(forS->body, vars);
+                    }
+                    if (auto* whileS = dynamic_cast<WhileStmt*>(s.get())) {
+                        if (whileS->body) collect(whileS->body, vars);
+                    }
+                };
+            collect(stmt, blockScopedVars);
         }
         else if (auto* fnStmt = dynamic_cast<FnStmt*>(stmt.get())) {
             Value fnVal;
@@ -307,6 +353,11 @@ void VM::executeBlock(const std::vector<StmtPtr>& statements) {
                 if (matched) break;
             }
         }
+    }
+    
+    // Clean up scoped variables at the end of block
+    for (const auto& varName : blockScopedVars) {
+        scopes.back().erase(varName);
     }
 }
 

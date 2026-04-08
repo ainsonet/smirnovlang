@@ -11,14 +11,17 @@ fn demoScoped() {
     println("=== Scoped Variables Demo ===");
     
     // This variable will NOT exist after the block
-    let! temp = "I will vanish after this block";
-    println("Inside block: " + temp);
+    let! tempData = "I will vanish after this block";
+    println("Inside block: tempData = " + tempData);
     
-    // temp is gone here!
+    // After this brace, tempData is automatically deleted
     
     // Regular variable still exists
     let permanent = "I stay forever";
-    println("Outside block: " + permanent);
+    println("Outside block: permanent = " + permanent);
+    
+    // tempData would cause error if accessed here:
+    // println(tempData);  // Error: undefined variable
 }
 
 // ============================================
