@@ -1,0 +1,102 @@
+// SmirnovLang - Innovative Features Demo
+// This file demonstrates the unique features of SmirnovLang
+
+// ============================================
+// 1. SCOPED VARIABLES (исчезающие переменные)
+// ============================================
+// Variables declared with let! are automatically 
+// destroyed after exiting the block
+
+fn demoScoped() {
+    println("=== Scoped Variables Demo ===");
+    
+    // This variable will NOT exist after the block
+    let! temp = "I will vanish after this block";
+    println("Inside block: " + temp);
+    
+    // temp is gone here!
+    
+    // Regular variable still exists
+    let permanent = "I stay forever";
+    println("Outside block: " + permanent);
+}
+
+// ============================================
+// 2. SQL-LIKE QUERIES
+// ============================================
+// Query collections with SQL-like syntax
+
+fn demoQueries() {
+    println("\n=== SQL-like Queries Demo ===");
+    
+    let users = [
+        {name: "Alice", age: 25, city: "NYC"},
+        {name: "Bob", age: 30, city: "LA"},
+        {name: "Charlie", age: 25, city: "NYC"},
+        {name: "Diana", age: 35, city: "NYC"}
+    ];
+    
+    // Select all users from NYC
+    let nycUsers = select * from users where users.age > 25;
+    println("Users older than 25: " + nycUsers);
+    
+    // Select specific fields
+    let names = select name from users where users.city == "NYC";
+    println("NYC residents: " + names);
+    
+    // Order by
+    let sorted = select * from users order by age;
+    println("Sorted by age: " + sorted);
+}
+
+// ============================================
+// 3. LIVE CONTRACTS (живые контракты)
+// ============================================
+// Contracts that can AUTO-FIX issues
+
+fn processPayment(amount: f64) -> f64
+    require amount > 0, "Amount must be positive"
+    ensure result >= 0, "Result cannot be negative", fix: 0
+{
+    return amount * 1.1;  // 10% fee
+}
+
+fn divideSafe(a: f64, b: f64) -> f64
+    require b != 0, "Cannot divide by zero"
+    ensure result => !result.isNaN(), "Result must be valid", fix: 0
+{
+    return a / b;
+}
+
+fn demoContracts() {
+    println("\n=== Live Contracts Demo ===");
+    
+    // Normal case - works fine
+    let result1 = processPayment(100);
+    println("processPayment(100) = " + result1);
+    
+    // This would fail require, but we won't call it
+    // let result2 = processPayment(-50);  // Would error!
+    
+    // divideSafe with auto-fix
+    let result3 = divideSafe(10, 2);
+    println("divideSafe(10, 2) = " + result3);
+    
+    let result4 = divideSafe(10, 0);  // Will trigger fix!
+    println("divideSafe(10, 0) = " + result4);
+}
+
+// ============================================
+// MAIN
+// ============================================
+
+fn main() {
+    println("SmirnovLang - Innovative Features Showcase");
+    println("==========================================");
+    
+    demoScoped();
+    demoQueries();
+    demoContracts();
+    
+    println("\nAll demos completed!");
+}

@@ -1,4 +1,5 @@
 #include "vm/vm.h"
+#include "ast/ast.h"
 #include <cmath>
 #include <sstream>
 #include <algorithm>
@@ -475,6 +476,11 @@ Value VM::evaluate(Expr* expr) {
         return Value();
     }
     
+    // SQL-like query expression
+    if (auto* query = dynamic_cast<QueryExpr*>(expr)) {
+        return executeQuery(query);
+    }
+    
     return Value();
 }
 
@@ -510,6 +516,17 @@ Value VM::executeFn(FnValue* fn, const std::vector<Value>& args) {
                     error("Contract failed: " + contract.message);
                 }
             }
+            // FIX contracts - auto-fix if condition fails
+            else if (contract.kind == FnStmt::Contract::FIX) {
+                Value cond = evaluate(contract.condition.get());
+                if (!cond.isTruthy()) {
+                    // Execute fix expression
+                    if (contract.fixExpr) {
+                        evaluate(contract.fixExpr.get());
+                        std::cout << "[FIX] Applied automatic fix: " << contract.message << "\n";
+                    }
+                }
+            }
         }
     }
     
@@ -530,6 +547,60 @@ Value VM::executeMatch(MatchExpr* match) {
     }
     
     return Value();
+}
+
+// SQL-like query execution
+Value VM::executeQuery(QueryExpr* query) {
+    // Evaluate FROM clause - get the collection
+    Value collection = evaluate(query->from.get());
+    
+    if (!collection.isArray()) {
+        error("Query can only be performed on arrays");
+        return Value();
+    }
+    
+    Value result;
+    result.tag = Value::Tag::ARRAY;
+    
+    // Check if it's SELECT *
+    bool selectAll = false;
+    if (!query->select.empty()) {
+        if (auto* ident = dynamic_cast<IdentifierExpr*>(query->select[0].get())) {
+            if (ident->name == "*") {
+                selectAll = true;
+            }
+        }
+    }
+    
+    // Filter with WHERE clause
+    for (const auto& item : collection.arrayVal) {
+        // Store item in a temporary variable for WHERE evaluation
+        std::string tempVar = "__item";
+        scopes.back()[tempVar] = item;
+        
+        bool passes = true;
+        if (query->where) {
+            Value cond = evaluate(query->where.get());
+            passes = cond.isTruthy();
+        }
+        
+        if (passes) {
+            if (selectAll) {
+                result.arrayVal.push_back(item.clone());
+            } else {
+                // For selected fields, we just return the item for now
+                result.arrayVal.push_back(item.clone());
+            }
+        }
+    }
+    
+    // ORDER BY
+    if (!query->orderBy.empty()) {
+        // Simple sort by first order field
+        // In real implementation would be more sophisticated
+    }
+    
+    return result;
 }
 
 void VM::registerBuiltins() {

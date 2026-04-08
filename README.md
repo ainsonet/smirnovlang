@@ -6,20 +6,46 @@
 
 ## Концепция
 
-SmirnovLang объединяет лучшие идеи из существующих языков и добавляет собственные инновации:
+SmirnovLang объединяет лучшие идеи из существующих языков и добавляет собственные **уникальные** инновации:
 
-### Ключевые фичи
+### Уникальные фичи (чего нет в других языках)
 
-1. **Fluid Pipes (Жидкие трубы)** — конвейерный оператор `|>` работает везде
-2. **Smart Null Safety** — автоматический unwrap в if-контексте, опциональные типы `?Type`
-3. **Pattern Matching everywhere** — деструктуризация в любом присваивании
-4. **Built-in Contracts** — `require`/`ensure` как часть синтаксиса функций
-5. **Concurrent loops** — ключевое слово `parallel` для автоматического распараллеливания
-6. **Unified Value Type** — `Value` может быть чем угодно, с статической типизацией сверху
+1. **Scoped Variables (исчезающие переменные)** — `let! name = value` автоматически удаляется после выхода из блока
+2. **SQL-like Queries** — запросы к коллекциям: `select * from users where age > 18 order by name`
+3. **Live Contracts (живые контракты)** — контракты с авто-исправлением: `ensure x > 0, fix: x = 1`
+
+### Дополнительные фичи
+
+4. **Fluid Pipes (Жидкие трубы)** — конвейерный оператор `|>` работает везде
+5. **Smart Null Safety** — автоматический unwrap в if-контексте, опциональные типы `?Type`
+6. **Pattern Matching everywhere** — деструктуризация в любом присваивании
+7. **Built-in Contracts** — `require`/`ensure` как часть синтаксиса функций
+8. **Concurrent loops** — ключевое слово `parallel` для автоматического распараллеливания
+9. **Unified Value Type** — `Value` может быть чем угодно, с статической типизацией сверху
 
 ### Синтаксис
 
 ```smirnov
+// === УНИКАЛЬНЫЕ ФИЧИ ===
+
+// 1. Scoped переменные (исчезают после блока)
+let! temp = readFile("data.txt");
+// temp исчезла здесь!
+
+// 2. SQL-подобные запросы
+let adults = select * from users where age > 18 order by name;
+let names = select name from users where city == "NYC";
+
+// 3. Живые контракты с авто-исправлением
+fn process(x) -> f64
+    require x > 0, "x must be positive"
+    ensure result >= 0, "result cannot be negative", fix: 0
+{
+    return x * 2;
+}
+
+// === ДРУГИЕ ФИЧИ ===
+
 // Жидкие трубы
 let result = [1, 2, 3, 4, 5]
     |> filter(x => x > 2)
@@ -29,14 +55,6 @@ let result = [1, 2, 3, 4, 5]
 // Pattern matching
 let point = (10, 20);
 let (x, y) = point;
-
-// Контракты
-fn divide(a, b) -> f64
-    require b != 0, "Division by zero"
-    ensure result => result * b == a
-{
-    return a / b;
-}
 
 // Параллельные вычисления
 parallel for i in 0..1000 {

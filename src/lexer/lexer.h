@@ -105,12 +105,15 @@ private:
             {"fn", TokenType::FN}, {"let", TokenType::LET}, {"mut", TokenType::MUT},
             {"if", TokenType::IF}, {"else", TokenType::ELSE}, {"match", TokenType::MATCH},
             {"for", TokenType::FOR}, {"while", TokenType::WHILE}, {"return", TokenType::RETURN},
-            {"require", TokenType::REQUIRE}, {"ensure", TokenType::ENSURE},
+            {"require", TokenType::REQUIRE}, {"ensure", TokenType::ENSURE}, {"fix", TokenType::FIX},
             {"parallel", TokenType::PARALLEL}, {"concurrent", TokenType::CONCURRENT},
             {"true", TokenType::TRUE}, {"false", TokenType::FALSE}, {"null", TokenType::NULLPTR},
             {"pub", TokenType::PUB}, {"mod", TokenType::MOD}, {"use", TokenType::USE},
             {"struct", TokenType::STRUCT}, {"enum", TokenType::ENUM},
             {"class", TokenType::CLASS}, {"import", TokenType::IMPORT},
+            // SQL-like query keywords
+            {"select", TokenType::SELECT}, {"from", TokenType::FROM}, {"where", TokenType::WHERE},
+            {"order", TokenType::ORDER}, {"by", TokenType::BY}, {"group", TokenType::GROUP}, {"into", TokenType::INTO},
         };
         
         auto it = keywords.find(value);

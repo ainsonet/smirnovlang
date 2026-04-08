@@ -129,6 +129,16 @@ struct MatchExpr : Expr {
     std::vector<Case> cases;
 };
 
+// SQL-like query expression: select * from collection where condition
+struct QueryExpr : Expr {
+    std::vector<ExprPtr> select;  // что выбираем (*
+    ExprPtr from;                 // откуда
+    ExprPtr where;                // условие
+    std::vector<std::pair<ExprPtr, bool>> orderBy;  // поле, asc/desc
+    std::vector<ExprPtr> groupBy;
+    ExprPtr into;                 // сохранить в переменную
+};
+
 // Statement nodes
 struct Stmt {
     virtual ~Stmt() = default;
@@ -142,6 +152,7 @@ struct ExprStmt : Stmt {
 struct LetStmt : Stmt {
     std::string name;
     bool isMutable = false;
+    bool isScoped = false;  // исчезает после блока
     std::shared_ptr<Type> type;  // optional type annotation
     ExprPtr init;
 };
@@ -190,8 +201,9 @@ struct FnStmt : Stmt {
     
     // Contracts
     struct Contract {
-        enum Kind { REQUIRE, ENSURE } kind;
-        ExprPtr condition;
+        enum Kind { REQUIRE, ENSURE, FIX } kind;
+        ExprPtr condition;     // условие
+        ExprPtr fixExpr;       // выражение для авто-исправления (только для FIX)
         std::string message;
     };
     std::vector<Contract> contracts;

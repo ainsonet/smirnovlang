@@ -117,6 +117,21 @@ private:
 
     StmtPtr parseLetStatement() {
         bool isMutable = previous().type == TokenType::MUT;
+        bool isScoped = false;
+        
+        // Check for scoped variable (let!)
+        if (check(TokenType::IDENT)) {
+            std::string ident = std::get<std::string>(peek().value);
+            if (!ident.empty() && ident[0] == '!') {
+                isScoped = true;
+                advance(); // consume !
+                // Get actual variable name
+                if (!check(TokenType::IDENT)) {
+                    error("Expected variable name after '!'");
+                    return nullptr;
+                }
+            }
+        }
         
         if (!check(TokenType::IDENT)) {
             error("Expected variable name after let/mut");
@@ -142,6 +157,7 @@ private:
         auto stmt = std::make_unique<LetStmt>();
         stmt->name = name;
         stmt->isMutable = isMutable;
+        stmt->isScoped = isScoped;
         stmt->type = type;
         stmt->init = std::move(init);
         return stmt;
@@ -189,18 +205,45 @@ private:
             fn->returnType = parseType();
         }
         
-        // Contracts (require/ensure)
-        while (match({TokenType::REQUIRE, TokenType::ENSURE})) {
+        // Contracts (require/ensure/fix)
+        while (match({TokenType::REQUIRE, TokenType::ENSURE, TokenType::FIX})) {
             FnStmt::Contract contract;
-            contract.kind = (previous().type == TokenType::REQUIRE) 
-                ? FnStmt::Contract::REQUIRE 
-                : FnStmt::Contract::ENSURE;
+            if (previous().type == TokenType::REQUIRE) {
+                contract.kind = FnStmt::Contract::REQUIRE;
+            } else if (previous().type == TokenType::FIX) {
+                contract.kind = FnStmt::Contract::FIX;
+            } else {
+                contract.kind = FnStmt::Contract::ENSURE;
+            }
             
             contract.condition = parseExpression();
             
+            // Parse optional message
             if (match({TokenType::COMMA})) {
                 if (check(TokenType::STRING)) {
                     contract.message = std::get<std::string>(advance().value);
+                }
+            }
+            
+            // Parse fix expression for FIX contracts
+            if (contract.kind == FnStmt::Contract::FIX) {
+                if (match({TokenType::COMMA}) || match({TokenType::IDENT})) {
+                    // Check if there's a fix: expression
+                    // Reset and parse properly
+                    if (previous().type != TokenType::IDENT || std::get<std::string>(previous().value) != "fix") {
+                        // Not a fix expression, just continue
+                    } else {
+                        // Already consumed "fix"
+                    }
+                }
+                // Try to parse fix: expression
+                if (match({TokenType::IDENT})) {
+                    std::string ident = std::get<std::string>(previous().value);
+                    if (ident == "fix") {
+                        if (match({TokenType::COLON})) {
+                            contract.fixExpr = parseExpression();
+                        }
+                    }
                 }
             }
             
@@ -873,8 +916,79 @@ private:
             return lambda;
         }
         
+        // SQL-like query: select ... from ... where ...
+        if (match({TokenType::SELECT})) {
+            return parseQueryExpression();
+        }
+        
         error("Unexpected token in expression");
         return nullptr;
+    }
+
+    // SQL-like query parser
+    ExprPtr parseQueryExpression() {
+        auto query = std::make_unique<QueryExpr>();
+        
+        // SELECT clause: * or comma-separated expressions
+        if (match({TokenType::STAR})) {
+            // select * - all fields
+            auto star = std::make_unique<IdentifierExpr>();
+            star->name = "*";
+            query->select.push_back(std::move(star));
+        } else {
+            // select field1, field2, ...
+            do {
+                query->select.push_back(parseExpression());
+            } while (match({TokenType::COMMA}));
+        }
+        
+        // FROM clause (required)
+        if (!match({TokenType::FROM})) {
+            error("Expected 'from' in query");
+            return nullptr;
+        }
+        query->from = parseExpression();
+        
+        // WHERE clause (optional)
+        if (match({TokenType::WHERE})) {
+            query->where = parseExpression();
+        }
+        
+        // ORDER BY clause (optional)
+        if (match({TokenType::ORDER})) {
+            if (!match({TokenType::BY})) {
+                error("Expected 'by' after 'order'");
+                return nullptr;
+            }
+            do {
+                auto field = parseExpression();
+                bool asc = true;
+                // check for ASC/DESC
+                if (match({TokenType::IDENT})) {
+                    std::string dir = std::get<std::string>(previous().value);
+                    asc = (dir == "asc" || dir == "ASC");
+                }
+                query->orderBy.emplace_back(std::move(field), asc);
+            } while (match({TokenType::COMMA}));
+        }
+        
+        // GROUP BY clause (optional)
+        if (match({TokenType::GROUP})) {
+            if (!match({TokenType::BY})) {
+                error("Expected 'by' after 'group'");
+                return nullptr;
+            }
+            do {
+                query->groupBy.push_back(parseExpression());
+            } while (match({TokenType::COMMA}));
+        }
+        
+        // INTO clause (optional) - store result in variable
+        if (match({TokenType::INTO})) {
+            query->into = parseExpression();
+        }
+        
+        return query;
     }
 };
 
