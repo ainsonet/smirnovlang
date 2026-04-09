@@ -1,0 +1,52 @@
+// Testing demo - SmirnovLang v0.7.0
+// Demonstrates built-in testing (UNIQUE FEATURE!)
+
+fn add(a, b) {
+    return a + b;
+}
+
+fn multiply(a, b) {
+    return a * b;
+}
+
+fn isEven(n) {
+    return n % 2 == 0;
+}
+
+fn main() {
+    println("=== Testing Demo ===\n");
+    println("SmirnovLang has built-in testing!\n");
+    
+    // Run tests using assert function
+    println("Running assertions:");
+    
+    // Math tests
+    assert(add(2, 3) == 5, "add(2, 3) should equal 5");
+    assert(add(-1, 1) == 0, "add(-1, 1) should equal 0");
+    assert(add(0, 0) == 0, "add(0, 0) should equal 0");
+    
+    assert(multiply(3, 4) == 12, "multiply(3, 4) should equal 12");
+    assert(multiply(0, 100) == 0, "multiply(0, 100) should equal 0");
+    assert(multiply(-2, 3) == -6, "multiply(-2, 3) should equal -6");
+    
+    // Boolean tests
+    assert(isEven(4) == true, "isEven(4) should be true");
+    assert(isEven(7) == false, "isEven(7) should be false");
+    assert(isEven(0) == true, "isEven(0) should be true");
+    
+    // Array tests
+    let arr = [1, 2, 3, 4, 5];
+    assert(len(arr) == 5, "array length should be 5");
+    assert(arr[0] == 1, "first element should be 1");
+    assert(arr[4] == 5, "last element should be 5");
+    
+    // String tests
+    let str = "Hello";
+    assert(len(str) == 5, "string length should be 5");
+    
+    // Pipeline tests
+    let result = [1, 2, 3, 4, 5] |> sum();
+    assert(result == 15, "sum of 1..5 should be 15");
+    
+    println("\n=== All tests passed! ===");
+}

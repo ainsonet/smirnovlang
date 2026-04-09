@@ -131,6 +131,11 @@ private:
             return parseReturnStatement();
         }
         
+        // UNIQUE FEATURE: Built-in testing!
+        if (match({TokenType::TEST})) {
+            return parseTestStatement();
+        }
+        
         // Block or expression
         if (check(TokenType::LBRACE)) {
             return parseBlock();
@@ -578,6 +583,38 @@ private:
         
         match({TokenType::SEMICOLON});
         return ret;
+    }
+
+    // UNIQUE FEATURE: Built-in test statement
+    StmtPtr parseTestStatement() {
+        auto test = std::make_unique<TestStmt>();
+        
+        // Test name (string or ident)
+        if (check(TokenType::STRING)) {
+            test->name = std::get<std::string>(advance().value);
+        } else if (check(TokenType::IDENT)) {
+            test->name = std::get<std::string>(advance().value);
+        } else {
+            error("Expected test name");
+            return nullptr;
+        }
+        
+        // Optional description
+        if (match({TokenType::COMMA})) {
+            if (check(TokenType::STRING)) {
+                test->description = std::get<std::string>(advance().value);
+            }
+        }
+        
+        // Test body - block with assertions
+        if (check(TokenType::LBRACE)) {
+            test->body = parseBlock();
+        } else {
+            error("Expected '{' after test name");
+            return nullptr;
+        }
+        
+        return test;
     }
 
     StmtPtr parseBlock() {

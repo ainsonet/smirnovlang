@@ -331,6 +331,26 @@ void VM::registerBuiltins() {
         return Value(0.0);
     });
     globalEnv["toFloat"].tag = Value::Tag::NATIVE_FN;
+    
+    // UNIQUE FEATURE: assert - assertion for testing
+    globalEnv["assert"] = Value([](const std::vector<Value>& args) {
+        if (args.empty()) {
+            std::cout << "[ASSERT] No arguments provided\n";
+            return Value(false);
+        }
+        
+        bool condition = args[0].isTruthy();
+        std::string message = args.size() > 1 ? args[1].strVal : "Assertion failed";
+        
+        if (!condition) {
+            std::cout << "[ASSERT FAILED] " << message << "\n";
+        } else {
+            std::cout << "[ASSERT PASSED] " << message << "\n";
+        }
+        
+        return Value(condition);
+    });
+    globalEnv["assert"].tag = Value::Tag::NATIVE_FN;
 }
 
 } // namespace smirnovlang

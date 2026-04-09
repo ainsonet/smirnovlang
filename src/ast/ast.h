@@ -243,6 +243,25 @@ struct ModuleStmt : Stmt {
     std::vector<StmtPtr> body;
 };
 
+// Test statement - built-in testing (unique feature!)
+struct TestStmt : Stmt {
+    std::string name;           // test name
+    StmtPtr body;               // test body with assertions
+    std::string description;    // optional description
+};
+
+// Assert expression - for tests
+struct AssertExpr : Expr {
+    ExprPtr condition;
+    std::string message;        // optional message on failure
+};
+
+// Documentation comment - for auto-doc generation
+struct DocComment : Stmt {
+    std::string content;        // documentation text
+    std::string target;         // what is being documented (function, class, etc.)
+};
+
 // Top-level program
 struct Program {
     std::vector<StmtPtr> statements;

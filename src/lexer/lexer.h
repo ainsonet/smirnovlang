@@ -113,6 +113,9 @@ private:
             {"struct", TokenType::STRUCT}, {"enum", TokenType::ENUM},
             {"class", TokenType::CLASS}, {"import", TokenType::IMPORT},
             {"in", TokenType::IN},
+            // Testing - UNIQUE FEATURE!
+            {"test", TokenType::TEST}, {"assert", TokenType::ASSERT},
+            {"doc", TokenType::DOC},
             // SQL-like query keywords
             {"select", TokenType::SELECT}, {"from", TokenType::FROM}, {"where", TokenType::WHERE},
             {"order", TokenType::ORDER}, {"by", TokenType::BY}, {"group", TokenType::GROUP}, {"into", TokenType::INTO},
