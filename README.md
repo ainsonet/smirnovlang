@@ -1,29 +1,29 @@
-# SmirnovLang v0.5.0
+# SmirnovLang v0.6.0
 
 <img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/master/logo.png" alt="SmirnovLang Logo" width="200"/>
 
 Современный язык программирования общего назначения с инновационными возможностями.
 
-## Концепция
+## Статус: **Рабочий прототип** ✅
 
-SmirnovLang объединяет лучшие идеи из существующих языков и добавляет собственные **уникальные** инновации:
+Ядро языка реализовано и работает! Базовые конструкции, функции, pipeline-выражения, контракты, scoped variables — всё уже функционирует.
 
-### Уникальные фичи (чего нет в других языках)
+### Что работает в 0.6.0
 
-1. **Scoped Variables (исчезающие переменные)** — `let! name = value` автоматически удаляется после выхода из блока
-2. **SQL-like Queries** — запросы к коллекциям: `select * from users where age > 18 order by name`
-3. **Live Contracts (живые контракты)** — контракты с авто-исправлением: `ensure x > 0, fix: x = 1`
-4. **Pipeline Assignment** — присваивание через pipe: `data |> filter() |> into result`
-5. **Auto-Memoization** — `memo fn fib(n) { ... }` автоматически кэширует результаты
-
-### Дополнительные фичи
-
-4. **Fluid Pipes (Жидкие трубы)** — конвейерный оператор `|>` работает везде
-5. **Smart Null Safety** — автоматический unwrap в if-контексте, опциональные типы `?Type`
-6. **Pattern Matching everywhere** — деструктуризация в любом присваивании
-7. **Built-in Contracts** — `require`/`ensure` как часть синтаксиса функций
-8. **Concurrent loops** — ключевое слово `parallel` для автоматического распараллеливания
-9. **Unified Value Type** — `Value` может быть чем угодно, с статической типизацией сверху
+✅ Лексический и синтаксический анализ  
+✅ Выполнение программ в VM  
+✅ Переменные (`let`, `mut`)  
+✅ Scoped variables (`let!`) — исчезают после блока  
+✅ Функции с аннотациями типов  
+✅ Контракты (`require`, `ensure`, `fix`)  
+✅ Auto-memoization (`memo fn`)  
+✅ Pipeline-выражения (`|>`)  
+✅ Pattern matching  
+✅ Циклы (`for`, `while`)  
+✅ Условные конструкции (`if/else`)  
+✅ Структуры и перечисления  
+✅ SQL-like запросы (базовые)  
+✅ Встроенные функции: `println`, `len`, `map`, `filter`, `sum`, `sqrt`, `min`, `max`, `range` и 20+ других
 
 ### Синтаксис
 
@@ -76,16 +76,43 @@ parallel for i in 0..1000 {
 
 ## Сборка
 
+### Linux/macOS
+
 ```bash
+cd SmirnovLang
 mkdir build && cd build
-cmake ..
-make
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j$(nproc)
+```
+
+### Windows (PowerShell)
+
+```powershell
+cd SmirnovLang
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release
 ```
 
 ## Запуск
 
 ```bash
-./smirnovLang examples/hello.smirnov
+# Hello World
+./build/smirnovLang examples/hello.smirnov
+
+# Более сложный пример
+./build/smirnovLang examples/innovative.smirnov
+
+# REPL режим
+./build/smirnovLang --repl
+```
+
+## Тесты
+
+```bash
+cd build
+ctest --output-on-failure
 ```
 
 ## Статус

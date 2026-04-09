@@ -21,3 +21,13 @@ Makefile
 *.dll
 *.so
 *.dylib
+
+# Tests
+smirnovTests
+
+# Languages
+*.md
+
+# OS
+.DS_Store
+Thumbs.db
