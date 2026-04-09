@@ -1,4 +1,4 @@
-# SmirnovLang v0.6.2
+# SmirnovLang v0.8.0
 
 <img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/master/logo.png" alt="SmirnovLang Logo" width="200"/>
 
@@ -6,9 +6,9 @@
 
 ## Статус: **Рабочий прототип** ✅
 
-Ядро языка реализовано и работает! Базовые конструкции, функции, pipeline-выражения, контракты, scoped variables — всё уже функционирует.
+Ядро языка реализовано и работает! Базовые конструкции, функции, pipeline-выражения, контракты, scoped variables, встроенное тестирование, data versioning — всё уже функционирует.
 
-### Что работает в 0.6.2
+### Что работает в 0.8.0
 
 ✅ Лексический и синтаксический анализ  
 ✅ Выполнение программ в VM  
@@ -24,6 +24,9 @@
 ✅ Структуры и перечисления  
 ✅ **Полные SQL-like запросы** (SELECT, WHERE, ORDER BY, GROUP BY, **LIMIT**, **OFFSET**)  
 ✅ **File I/O** (readFile, writeFile, appendFile, fileExists)  
+✅ **Встроенное тестирование** (`assert(condition, message)`)  
+✅ **Data Versioning** (`commit`, `rollback`, `history`, `diff`)  
+✅ **Auto-doc generation** (`doc(function)`)  
 ✅ Встроенные функции: `println`, `len`, `map`, `filter`, `sum`, `sqrt`, `min`, `max`, `range`, `slice` и 30+ других
 
 ### Синтаксис
@@ -56,6 +59,21 @@ memo fn fib(n) {
     if n <= 1 { return n; }
     return fib(n - 1) + fib(n - 2);
 }
+
+// === УНИКАЛЬНЫЕ ФИЧИ v0.8.0 ===
+
+// 6. Встроенное тестирование
+assert(add(2, 3) == 5, "add should work");
+assert(isEven(4) == true, "isEven should return true");
+
+// 7. Data Versioning - отслеживание изменений
+commit(myData, "v1");           // сохранить версию
+let restored = rollback("v1");  // восстановить
+history("v1");                  // показать историю
+diff(oldVersion, newVersion);   // сравнить версии
+
+// 8. Auto-doc - автодокументация
+doc("myFunction");  // сгенерировать docs
 
 // === ДРУГИЕ ФИЧИ ===
 
