@@ -262,6 +262,14 @@ struct DocComment : Stmt {
     std::string target;         // what is being documented (function, class, etc.)
 };
 
+// Data versioning - UNIQUE FEATURE! Track changes and rollback
+struct VersionStmt : Stmt {
+    std::string name;           // version name/tag
+    ExprPtr data;               // data to version
+    std::string action;         // "commit", "rollback", "history", "diff"
+    std::string target;         // target variable for rollback/history
+};
+
 // Top-level program
 struct Program {
     std::vector<StmtPtr> statements;

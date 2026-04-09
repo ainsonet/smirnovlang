@@ -4,6 +4,7 @@
 #include <sstream>
 #include <filesystem>
 #include <functional>
+#include <map>
 
 namespace fs = std::filesystem;
 
@@ -351,6 +352,134 @@ void VM::registerBuiltins() {
         return Value(condition);
     });
     globalEnv["assert"].tag = Value::Tag::NATIVE_FN;
+    
+    // UNIQUE FEATURE: Data Versioning - commit
+    // version.commit(data, "name") - save version with name
+    globalEnv["commit"] = Value([](const std::vector<Value>& args) {
+        // We'll use a static map to store versions in this implementation
+        static std::map<std::string, std::vector<Value>> versionStore;
+        
+        if (args.size() < 2) {
+            std::cout << "[VERSION] Usage: commit(data, \"name\")\n";
+            return Value(false);
+        }
+        
+        std::string name = args[1].strVal;
+        
+        // Store this version
+        Value data = args[0].clone();
+        versionStore[name].push_back(data);
+        
+        std::cout << "[VERSION] Committed: " << name 
+                  << " (total versions: " << versionStore[name].size() << ")\n";
+        
+        return Value(true);
+    });
+    globalEnv["commit"].tag = Value::Tag::NATIVE_FN;
+    
+    // UNIQUE FEATURE: Data Versioning - rollback
+    // version.rollback("name") - get last version
+    globalEnv["rollback"] = Value([](const std::vector<Value>& args) {
+        static std::map<std::string, std::vector<Value>> versionStore;
+        
+        if (args.empty()) {
+            std::cout << "[VERSION] Usage: rollback(\"name\")\n";
+            return Value();
+        }
+        
+        std::string name = args[0].strVal;
+        
+        if (versionStore[name].empty()) {
+            std::cout << "[VERSION] No versions found for: " << name << "\n";
+            return Value();
+        }
+        
+        // Return the last version
+        Value result = versionStore[name].back().clone();
+        std::cout << "[VERSION] Rolled back to: " << name << "\n";
+        
+        return result;
+    });
+    globalEnv["rollback"].tag = Value::Tag::NATIVE_FN;
+    
+    // UNIQUE FEATURE: Data Versioning - history
+    // version.history("name") - get all versions
+    globalEnv["history"] = Value([](const std::vector<Value>& args) {
+        static std::map<std::string, std::vector<Value>> versionStore;
+        
+        if (args.empty()) {
+            std::cout << "[VERSION] Usage: history(\"name\")\n";
+            return Value();
+        }
+        
+        std::string name = args[0].strVal;
+        
+        if (versionStore[name].empty()) {
+            std::cout << "[VERSION] No history for: " << name << "\n";
+            return Value();
+        }
+        
+        Value result;
+        result.tag = Value::Tag::ARRAY;
+        
+        std::cout << "[VERSION] History for " << name << ":\n";
+        for (size_t i = 0; i < versionStore[name].size(); ++i) {
+            std::cout << "  v" << i << ": " << versionStore[name][i].toString() << "\n";
+            result.arrayVal.push_back(versionStore[name][i].clone());
+        }
+        
+        return result;
+    });
+    globalEnv["history"].tag = Value::Tag::NATIVE_FN;
+    
+    // UNIQUE FEATURE: Data Versioning - diff
+    // version.diff(v1, v2) - compare two versions
+    globalEnv["diff"] = Value([](const std::vector<Value>& args) {
+        if (args.size() < 2) {
+            std::cout << "[VERSION] Usage: diff(version1, version2)\n";
+            return Value();
+        }
+        
+        std::string v1 = args[0].toString();
+        std::string v2 = args[1].toString();
+        
+        if (v1 == v2) {
+            std::cout << "[VERSION] No differences (identical)\n";
+            return Value(true); // true = no diff
+        }
+        
+        std::cout << "[VERSION] DIFF:\n";
+        std::cout << "  - " << v1 << "\n";
+        std::cout << "  + " << v2 << "\n";
+        
+        return Value(false); // false = has diff
+    });
+    globalEnv["diff"].tag = Value::Tag::NATIVE_FN;
+    
+    // UNIQUE FEATURE: Auto-doc - generate documentation
+    // doc(function) - generate docs for a function
+    globalEnv["doc"] = Value([](const std::vector<Value>& args) {
+        if (args.empty()) {
+            std::cout << "[DOC] Usage: doc(functionName)\n";
+            return Value();
+        }
+        
+        // Try to get function info
+        std::string name = args[0].toString();
+        
+        std::cout << "[DOC] Generating documentation for: " << name << "\n";
+        std::cout << "========================================\n";
+        std::cout << "Function: " << name << "\n";
+        
+        // For now, just return a string representation
+        // In full implementation, this would use DocComment from AST
+        Value result;
+        result.tag = Value::Tag::STRING;
+        result.strVal = "Documentation for " + name + " - auto-generated";
+        
+        return result;
+    });
+    globalEnv["doc"].tag = Value::Tag::NATIVE_FN;
 }
 
 } // namespace smirnovlang

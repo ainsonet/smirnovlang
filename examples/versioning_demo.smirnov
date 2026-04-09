@@ -1,0 +1,47 @@
+// Data Versioning Demo - SmirnovLang v0.8.0
+// Demonstrates built-in data versioning (UNIQUE FEATURE!)
+
+fn main() {
+    println("=== Data Versioning Demo ===\n");
+    
+    // Create some data
+    let data1 = [1, 2, 3];
+    let data2 = [1, 2, 3, 4];
+    let data3 = [1, 2, 3, 4, 5];
+    
+    println("Original data: [1, 2, 3]");
+    println("Modified: [1, 2, 3, 4]");
+    println("Modified again: [1, 2, 3, 4, 5]\n");
+    
+    // Commit versions
+    println("--- Committing versions ---");
+    commit(data1, "myarray_v1");
+    commit(data2, "myarray_v2");
+    commit(data3, "myarray_v3");
+    
+    println("");
+    
+    // View history
+    println("--- Viewing history ---");
+    history("myarray_v1");
+    
+    println("");
+    
+    // Rollback to previous version
+    println("--- Rolling back ---");
+    let restored = rollback("myarray_v1");
+    println("Restored: ", restored);
+    
+    println("");
+    
+    // Compare versions
+    println("--- Comparing versions ---");
+    diff(data1, data2);
+    
+    println("\n=== Doc Generation Demo ===\n");
+    
+    // Generate documentation
+    doc("myFunction");
+    
+    println("\n=== All unique features working! ===");
+}

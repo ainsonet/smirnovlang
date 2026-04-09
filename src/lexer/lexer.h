@@ -116,6 +116,10 @@ private:
             // Testing - UNIQUE FEATURE!
             {"test", TokenType::TEST}, {"assert", TokenType::ASSERT},
             {"doc", TokenType::DOC},
+            // Data Versioning - UNIQUE FEATURE!
+            {"version", TokenType::VERSION}, {"commit", TokenType::COMMIT},
+            {"rollback", TokenType::ROLLBACK}, {"history", TokenType::HISTORY},
+            {"diff", TokenType::DIFF},
             // SQL-like query keywords
             {"select", TokenType::SELECT}, {"from", TokenType::FROM}, {"where", TokenType::WHERE},
             {"order", TokenType::ORDER}, {"by", TokenType::BY}, {"group", TokenType::GROUP}, {"into", TokenType::INTO},
