@@ -1,0 +1,87 @@
+// File I/O demo - SmirnovLang v0.6.2
+// Demonstrates file reading and writing capabilities
+
+fn main() {
+    println("=== File I/O Demo ===\n");
+    
+    // Write to file
+    println("1. Writing to data.txt:");
+    let content = "Hello, SmirnovLang!";
+    writeFile("data.txt", content);
+    println("   Written: " + content);
+    
+    // Read from file
+    println("\n2. Reading from data.txt:");
+    let readContent = readFile("data.txt");
+    println("   Read: " + readContent);
+    
+    // Check if file exists
+    println("\n3. Checking file existence:");
+    let exists = fileExists("data.txt");
+    println("   data.txt exists: " + exists);
+    
+    let notExists = fileExists("nonexistent.txt");
+    println("   nonexistent.txt exists: " + notExists);
+    
+    // Append to file
+    println("\n4. Appending to data.txt:");
+    let line2 = "\nThis is line 2!";
+    appendFile("data.txt", line2);
+    println("   Appended: " + line2);
+    
+    // Read updated content
+    let updatedContent = readFile("data.txt");
+    println("   Current content:\n   " + updatedContent);
+    
+    // Write JSON-like data
+    println("\n5. Writing structured data:");
+    let jsonLike = "{\"name\": \"Alice\", \"age\": 30, \"city\": \"NYC\"}";
+    writeFile("user.json", jsonLike);
+    println("   Written JSON: " + jsonLike);
+    
+    // Read and display
+    let userData = readFile("user.json");
+    println("   Read back: " + userData);
+    
+    // Write array data
+    println("\n6. Writing array data:");
+    let arrayData = "[1, 2, 3, 4, 5]";
+    writeFile("numbers.txt", arrayData);
+    println("   Written: " + arrayData);
+    
+    // Read numbers
+    let numbers = readFile("numbers.txt");
+    println("   Read: " + numbers);
+    
+    // Read all lines
+    println("\n7. Reading all lines:");
+    let lines = readFile("data.txt");
+    let lineCount = len(lines);
+    println("   Total characters: " + lineCount);
+    
+    // Parse numbers from file
+    println("\n8. Processing file content:");
+    let nums = [1, 2, 3, 4, 5];
+    let doubled = nums |> map(x => x * 2);
+    let sumResult = sum(doubled);
+    println("   Sum of doubled: " + sumResult);
+    
+    // Write summary
+    println("\n9. Writing summary:");
+    let summary = "File I/O Demo completed successfully!\nTotal operations: 9";
+    writeFile("summary.txt", summary);
+    println("   Summary written");
+    
+    // Read summary
+    let finalSummary = readFile("summary.txt");
+    println("   Summary:\n" + finalSummary);
+    
+    println("\n=== File I/O demo completed! ===");
+    
+    // Cleanup (optional)
+    // Uncomment to delete files:
+    // deleteFile("data.txt");
+    // deleteFile("user.json");
+    // deleteFile("numbers.txt");
+    // deleteFile("summary.txt");
+}

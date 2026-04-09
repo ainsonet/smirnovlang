@@ -1,8 +1,11 @@
 #include "vm/vm.h"
 #include <cmath>
+#include <fstream>
+#include <sstream>
+#include <filesystem>
 #include <functional>
 
-namespace smirnovlang {
+namespace fs = std::filesystem;
 
 // Extend VM with more built-in functions
 void VM::registerBuiltins() {

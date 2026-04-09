@@ -1,4 +1,4 @@
-# SmirnovLang v0.6.1
+# SmirnovLang v0.6.2
 
 <img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/master/logo.png" alt="SmirnovLang Logo" width="200"/>
 
@@ -8,7 +8,7 @@
 
 Ядро языка реализовано и работает! Базовые конструкции, функции, pipeline-выражения, контракты, scoped variables — всё уже функционирует.
 
-### Что работает в 0.6.1
+### Что работает в 0.6.2
 
 ✅ Лексический и синтаксический анализ  
 ✅ Выполнение программ в VM  
@@ -23,7 +23,8 @@
 ✅ Условные конструкции (`if/else`)  
 ✅ Структуры и перечисления  
 ✅ **Полные SQL-like запросы** (SELECT, WHERE, ORDER BY, GROUP BY, **LIMIT**, **OFFSET**)  
-✅ Встроенные функции: `println`, `len`, `map`, `filter`, `sum`, `sqrt`, `min`, `max`, `range`, `slice` и 25+ других
+✅ **File I/O** (readFile, writeFile, appendFile, fileExists)  
+✅ Встроенные функции: `println`, `len`, `map`, `filter`, `sum`, `sqrt`, `min`, `max`, `range`, `slice` и 30+ других
 
 ### Синтаксис
 
