@@ -763,12 +763,59 @@ Value VM::executeQuery(QueryExpr* query) {
     
     popScope();
     
-    // ORDER BY - simple numeric sort
+    // ORDER BY - sort by specified fields
     if (!query->orderBy.empty() && !result.arrayVal.empty()) {
-        // Just sort by first order field ascending for now
-        std::sort(result.arrayVal.begin(), result.arrayVal.end(), [](const Value& a, const Value& b) {
-            return a < b;
-        });
+        // Use first order field for sorting
+        auto& firstOrder = query->orderBy[0];
+        std::string fieldName;
+        if (auto* ident = dynamic_cast<IdentifierExpr*>(firstOrder.first.get())) {
+            fieldName = ident->name;
+        }
+        
+        bool ascending = firstOrder.second;
+        
+        std::sort(result.arrayVal.begin(), result.arrayVal.end(), 
+            [&fieldName, ascending](const Value& a, const Value& b) {
+                // For objects, compare by field
+                if (a.tag == Value::Tag::OBJECT && a.objectVal && 
+                    b.tag == Value::Tag::OBJECT && b.objectVal) {
+                    auto aIt = a.objectVal->fields.find(fieldName);
+                    auto bIt = b.objectVal->fields.find(fieldName);
+                    if (aIt != a.objectVal->fields.end() && bIt != b.objectVal->fields.end()) {
+                        if (ascending) return aIt->second < bIt->second;
+                        return bIt->second < aIt->second;
+                    }
+                }
+                // For primitives, direct comparison
+                if (ascending) return a < b;
+                return b < a;
+            });
+    }
+    
+    // OFFSET - skip first N elements
+    if (query->offset) {
+        Value offsetVal = evaluate(query->offset.get());
+        if (offsetVal.isInt()) {
+            long long offset = offsetVal.intVal;
+            if (offset > 0 && offset < (long long)result.arrayVal.size()) {
+                result.arrayVal.erase(result.arrayVal.begin(), 
+                                     result.arrayVal.begin() + offset);
+            } else if (offset >= (long long)result.arrayVal.size()) {
+                // Offset beyond array - return empty
+                result.arrayVal.clear();
+            }
+        }
+    }
+    
+    // LIMIT - take first N elements
+    if (query->limit && !result.arrayVal.empty()) {
+        Value limitVal = evaluate(query->limit.get());
+        if (limitVal.isInt()) {
+            long long limit = limitVal.intVal;
+            if (limit >= 0 && (long long)result.arrayVal.size() > limit) {
+                result.arrayVal.resize(limit);
+            }
+        }
     }
     
     return result;

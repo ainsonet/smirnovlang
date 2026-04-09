@@ -1,0 +1,84 @@
+// SQL-like queries demo - SmirnovLang v0.6.1
+// Demonstrates full SQL-like query features including LIMIT and OFFSET
+
+fn main() {
+    println("=== SQL-like Queries Demo ===\n");
+    
+    // Sample data - users with different attributes
+    let users = [
+        {name: "Alice", age: 25, city: "NYC", salary: 75000},
+        {name: "Bob", age: 30, city: "LA", salary: 85000},
+        {name: "Charlie", age: 25, city: "NYC", salary: 70000},
+        {name: "Diana", age: 35, city: "NYC", salary: 95000},
+        {name: "Eve", age: 28, city: "LA", salary: 80000},
+        {name: "Frank", age: 40, city: "Chicago", salary: 100000},
+        {name: "Grace", age: 32, city: "NYC", salary: 90000}
+    ];
+    
+    // Basic query - all users from NYC
+    println("1. All users from NYC:");
+    let nycUsers = select * from users where users.city == "NYC";
+    println(nycUsers);
+    
+    // Select specific fields
+    println("\n2. Names and ages of users from LA:");
+    let laNames = select name, age from users where users.city == "LA";
+    println(laNames);
+    
+    // Order by age (ascending)
+    println("\n3. Users ordered by age (youngest first):");
+    let byAge = select * from users order by age;
+    println(byAge);
+    
+    // Order by age (descending)
+    println("\n4. Users ordered by age (oldest first):");
+    let byAgeDesc = select * from users where users.age > 20 order by age desc;
+    println(byAgeDesc);
+    
+    // LIMIT - get only top 3 users
+    println("\n5. Top 3 highest paid users:");
+    let top3 = select * from users order by salary desc limit 3;
+    println(top3);
+    
+    // LIMIT with WHERE
+    println("\n6. First 2 users older than 28:");
+    let youngOld = select * from users where users.age > 28 order by age limit 2;
+    println(youngOld);
+    
+    // OFFSET - skip first 2, get next 2
+    println("\n7. Users 3-4 (skip first 2):");
+    let offsetUsers = select * from users order by name offset 2 limit 2;
+    println(offsetUsers);
+    
+    // OFFSET for pagination (page 2 of 2, 2 items per page)
+    println("\n8. Page 2 of users (offset 2, limit 2):");
+    let page2 = select * from users order by name offset 2 limit 2;
+    println(page2);
+    
+    // Complex query - multiple conditions
+    println("\n9. NYC users with salary > 80000:");
+    let highPaid = select * from users where users.city == "NYC" and users.salary > 80000 order by salary desc;
+    println(highPaid);
+    
+    // Calculate average salary with aggregate (simulated)
+    println("\n10. Query with calculation:");
+    let totalSalary = select * from users;
+    let count = len(totalSalary);
+    println("Total users: " + count);
+    
+    // Pagination pattern - get page N
+    fn getPage(items, pageNum, pageSize) {
+        let offset = pageNum * pageSize;
+        return items |> slice(offset, offset + pageSize);
+    }
+    
+    println("\n11. Pagination example - page 1 (items 0-2):");
+    let page1 = getPage(users, 0, 3);
+    println(page1);
+    
+    println("\n12. Pagination example - page 2 (items 3-5):");
+    let page2 = getPage(users, 1, 3);
+    println(page2);
+    
+    println("\n=== All queries completed! ===");
+}

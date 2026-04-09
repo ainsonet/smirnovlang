@@ -14,7 +14,7 @@ enum class TokenType {
     PUB, MOD, USE, STRUCT, ENUM, CLASS, IMPORT, IN,
 
     // SQL-like queries
-    SELECT, FROM, WHERE, ORDER, BY, GROUP, INTO,
+    SELECT, FROM, WHERE, ORDER, BY, GROUP, INTO, LIMIT, OFFSET,
 
     // Operators
     PLUS, MINUS, STAR, SLASH, PERCENT,

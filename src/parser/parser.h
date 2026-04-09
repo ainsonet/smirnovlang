@@ -1043,6 +1043,16 @@ private:
             query->into = parseExpression();
         }
         
+        // LIMIT clause (optional)
+        if (match({TokenType::LIMIT})) {
+            query->limit = parseExpression();
+        }
+        
+        // OFFSET clause (optional)
+        if (match({TokenType::OFFSET})) {
+            query->offset = parseExpression();
+        }
+        
         return query;
     }
 };

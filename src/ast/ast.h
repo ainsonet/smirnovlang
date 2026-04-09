@@ -137,6 +137,8 @@ struct QueryExpr : Expr {
     std::vector<std::pair<ExprPtr, bool>> orderBy;  // поле, asc/desc
     std::vector<ExprPtr> groupBy;
     ExprPtr into;                 // сохранить в переменную
+    ExprPtr limit;                // лимит количества результатов
+    ExprPtr offset;               // смещение для пагинации
 };
 
 // Statement nodes
