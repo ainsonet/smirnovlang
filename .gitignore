@@ -25,8 +25,8 @@ Makefile
 # Tests
 smirnovTests
 
-# Languages
-*.md
+# Compiled binaries
+smirnovLang
 
 # OS
 .DS_Store
