@@ -5,7 +5,7 @@ All notable changes to SmirnovLang will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2024
+## [1.1.0] - 2026
 
 ### Added
 - **100+ new built-in functions** - most comprehensive DSL runtime
@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved error messages
 - Enhanced pipeline operator performance
 
-## [1.0.0] - 2024
+## [1.0.0] - 2026
 
 ### Added
 - Синхронизирована версия (была 0.6.2 в коде)
@@ -40,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Исправлены критические ошибки компиляции
 - Устранены проблемы с unique_ptr/shared_ptr
 
-## [0.8.0] - 2024
+## [0.8.0] - 2026
 
 ### Added
 - SQL-подобные запросы (SELECT, WHERE, ORDER BY, LIMIT, OFFSET)
@@ -52,7 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Улучшена производительность VM
 - Оптимизированы pipeline-выражения
 
-## [0.6.2] - 2024
+## [0.6.2] - 2026
 
 ### Added
 - Базовые конструкции языка
@@ -69,7 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Рефакторинг лексера и парсера
 - Улучшена обработка ошибок
 
-## [0.5.0] - 2024
+## [0.5.0] - 2026
 
 ### Added
 - Базовый VM
