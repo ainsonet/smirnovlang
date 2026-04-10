@@ -68,7 +68,7 @@ struct Value {
 struct FnValue {
     std::string name;
     std::vector<std::string> params;
-    std::vector<std::shared_ptr<Stmt>> body;
+    std::vector<std::unique_ptr<Stmt>> body;
     std::shared_ptr<Type> returnType;
     std::vector<FnStmt::Contract> contracts;
     std::shared_ptr<std::unordered_map<std::string, Value>> captures;

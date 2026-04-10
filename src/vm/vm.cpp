@@ -1,6 +1,7 @@
 #include "vm/vm.h"
 #include "ast/ast.h"
 #include <cmath>
+#include <iostream>
 #include <sstream>
 #include <algorithm>
 
@@ -291,9 +292,8 @@ void VM::executeBlock(const std::vector<StmtPtr>& statements) {
             for (auto& p : fnStmt->params) {
                 fnVal.fnVal->params.push_back(p.first);
             }
-            fnVal.fnVal->body = fnStmt->body;
+            fnVal.fnVal->body = std::move(fnStmt->body);
             fnVal.fnVal->returnType = fnStmt->returnType;
-            fnVal.fnVal->contracts = fnStmt->contracts;
             fnVal.fnVal->isMemo = fnStmt->isMemo;
             
             globalEnv[fnStmt->name] = fnVal;
@@ -460,7 +460,7 @@ Value VM::evaluate(Expr* expr) {
         closure.closureVal = std::make_shared<ClosureValue>();
         closure.closureVal->fn = std::make_shared<FnValue>();
         closure.closureVal->fn->params = lambda->params;
-        closure.closureVal->fn->body = lambda->body;
+        closure.closureVal->fn->body = std::move(lambda->body);
         closure.closureVal->fn->returnType = std::make_shared<Type>(lambda->returnType);
         
         // Capture current scope
