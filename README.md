@@ -1,4 +1,4 @@
-# SmirnovLang
+#"" SmirnovLang
 
 <div align="center">
 
@@ -46,13 +46,6 @@
 ✅ **Data Versioning** (`commit`, `rollback`, `history`, `diff`)  
 ✅ **Auto-doc generation** (`doc(function)`)  
 ✅ **100+ встроенных функций** (см. ниже)  
-
----
-
-## 📚 Документация
-
-- [Язык программирования](docs/language.md) - полный справочник синтаксиса
-- [Встроенные функции](docs/builtins.md) - 100+ функций с примерами
 
 ---
 
