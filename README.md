@@ -1,14 +1,14 @@
-# SmirnovLang v0.8.0
+# SmirnovLang v1.0.0
 
 <img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/master/logo.png" alt="SmirnovLang Logo" width="200"/>
 
 Современный язык программирования общего назначения с инновационными возможностями.
 
-## Статус: **Рабочий прототип** ✅
+## Статус: **Релиз v1.0.0** ✅
 
 Ядро языка реализовано и работает! Базовые конструкции, функции, pipeline-выражения, контракты, scoped variables, встроенное тестирование, data versioning — всё уже функционирует.
 
-### Что работает в 0.8.0
+### Что работает в 1.0.0
 
 ✅ Лексический и синтаксический анализ  
 ✅ Выполнение программ в VM  
@@ -60,7 +60,7 @@ memo fn fib(n) {
     return fib(n - 1) + fib(n - 2);
 }
 
-// === УНИКАЛЬНЫЕ ФИЧИ v0.8.0 ===
+// === УНИКАЛЬНЫЕ ФИЧИ v1.0.0 ===
 
 // 6. Встроенное тестирование
 assert(add(2, 3) == 5, "add should work");
@@ -137,3 +137,24 @@ ctest --output-on-failure
 ## Статус
 
 Язык в активной разработке.
+
+## Changelog
+
+### v1.0.0 (Release)
+- Синхронизирована версия (была 0.6.2 в коде)
+- Добавлены функции File I/O: readFile, writeFile, appendFile, fileExists, deleteFile
+- Расширены тесты (40+ тестов против 10)
+- Улучшена документация
+- Объединены встроенные функции в единую реализацию
+
+### v0.8.0
+- SQL-подобные запросы (SELECT, WHERE, ORDER BY, LIMIT, OFFSET)
+- Data Versioning (commit, rollback, history, diff)
+- Встроенное тестирование (assert)
+- Auto-doc генерация
+
+### v0.6.2
+- Базовые конструкции языка
+- Функции, контракты, memoization
+- Pipeline выражения
+- Pattern matching

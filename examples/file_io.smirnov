@@ -1,4 +1,4 @@
-// File I/O demo - SmirnovLang v0.6.2
+// File I/O demo - SmirnovLang v1.0.0
 // Demonstrates file reading and writing capabilities
 
 fn main() {

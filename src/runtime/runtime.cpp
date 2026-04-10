@@ -480,6 +480,99 @@ void VM::registerBuiltins() {
         return result;
     });
     globalEnv["doc"].tag = Value::Tag::NATIVE_FN;
+    
+    // File I/O functions
+    globalEnv["readFile"] = Value([](const std::vector<Value>& args) {
+        if (args.empty() || !args[0].isString()) {
+            std::cerr << "[ERROR] readFile: filename required\n";
+            return Value("");
+        }
+        
+        std::string filename = args[0].strVal;
+        std::ifstream file(filename);
+        
+        if (!file.is_open()) {
+            std::cerr << "[ERROR] readFile: cannot open file '" << filename << "'\n";
+            return Value("");
+        }
+        
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        return Value(buffer.str());
+    });
+    globalEnv["readFile"].tag = Value::Tag::NATIVE_FN;
+    
+    globalEnv["writeFile"] = Value([](const std::vector<Value>& args) {
+        if (args.size() < 2 || !args[0].isString() || !args[1].isString()) {
+            std::cerr << "[ERROR] writeFile: filename and content required\n";
+            return Value(false);
+        }
+        
+        std::string filename = args[0].strVal;
+        std::string content = args[1].strVal;
+        
+        std::ofstream file(filename);
+        if (!file.is_open()) {
+            std::cerr << "[ERROR] writeFile: cannot open file '" << filename << "'\n";
+            return Value(false);
+        }
+        
+        file << content;
+        std::cout << "[OK] Written to " << filename << "\n";
+        return Value(true);
+    });
+    globalEnv["writeFile"].tag = Value::Tag::NATIVE_FN;
+    
+    globalEnv["appendFile"] = Value([](const std::vector<Value>& args) {
+        if (args.size() < 2 || !args[0].isString() || !args[1].isString()) {
+            std::cerr << "[ERROR] appendFile: filename and content required\n";
+            return Value(false);
+        }
+        
+        std::string filename = args[0].strVal;
+        std::string content = args[1].strVal;
+        
+        std::ofstream file(filename, std::ios::app);
+        if (!file.is_open()) {
+            std::cerr << "[ERROR] appendFile: cannot open file '" << filename << "'\n";
+            return Value(false);
+        }
+        
+        file << content;
+        std::cout << "[OK] Appended to " << filename << "\n";
+        return Value(true);
+    });
+    globalEnv["appendFile"].tag = Value::Tag::NATIVE_FN;
+    
+    globalEnv["fileExists"] = Value([](const std::vector<Value>& args) {
+        if (args.empty() || !args[0].isString()) {
+            return Value(false);
+        }
+        
+        std::string filename = args[0].strVal;
+        std::ifstream file(filename);
+        return Value(file.good());
+    });
+    globalEnv["fileExists"].tag = Value::Tag::NATIVE_FN;
+    
+    // deleteFile function
+    globalEnv["deleteFile"] = Value([](const std::vector<Value>& args) {
+        if (args.empty() || !args[0].isString()) {
+            std::cerr << "[ERROR] deleteFile: filename required\n";
+            return Value(false);
+        }
+        
+        std::string filename = args[0].strVal;
+        
+        if (std::remove(filename.c_str()) == 0) {
+            std::cout << "[OK] Deleted " << filename << "\n";
+            return Value(true);
+        }
+        
+        std::cerr << "[ERROR] deleteFile: cannot delete '" << filename << "'\n";
+        return Value(false);
+    });
+    globalEnv["deleteFile"].tag = Value::Tag::NATIVE_FN;
 }
 
 } // namespace smirnovlang

@@ -1,4 +1,4 @@
-// SQL-like queries demo - SmirnovLang v0.6.1
+// SQL-like queries demo - SmirnovLang v1.0.0
 // Demonstrates full SQL-like query features including LIMIT and OFFSET
 
 fn main() {

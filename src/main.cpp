@@ -11,7 +11,7 @@
 using namespace smirnovlang;
 
 void printUsage(const char* programName) {
-    std::cout << "SmirnovLang v0.6.2\n";
+    std::cout << "SmirnovLang v1.0.0\n";
     std::cout << "Usage: " << programName << " [options] <file.smirnov>\n";
     std::cout << "Options:\n";
     std::cout << "  -c, --compile  Compile to output (not implemented)\n";
@@ -20,7 +20,7 @@ void printUsage(const char* programName) {
 }
 
 void runREPL() {
-    std::cout << "SmirnovLang REPL v0.6.2\n";
+    std::cout << "SmirnovLang REPL v1.0.0\n";
     std::cout << "Type 'exit' to quit\n\n";
     
     VM vm;

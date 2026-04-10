@@ -1,4 +1,4 @@
-// Data Versioning Demo - SmirnovLang v0.8.0
+// Data Versioning Demo - SmirnovLang v1.0.0
 // Demonstrates built-in data versioning (UNIQUE FEATURE!)
 
 fn main() {

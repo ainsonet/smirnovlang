@@ -1,4 +1,4 @@
-// Testing demo - SmirnovLang v0.7.0
+// Testing demo - SmirnovLang v1.0.0
 // Demonstrates built-in testing (UNIQUE FEATURE!)
 
 fn add(a, b) {
