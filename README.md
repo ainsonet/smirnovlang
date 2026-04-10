@@ -1,14 +1,14 @@
-# SmirnovLang v1.0.0
+# SmirnovLang v1.1.0
 
 <img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/master/logo.png" alt="SmirnovLang Logo" width="200"/>
 
 Современный язык программирования общего назначения с инновационными возможностями.
 
-## Статус: **Релиз v1.0.0** ✅
+## Статус: **Релиз v1.1.0** ✅
 
-Ядро языка реализовано и работает! Базовые конструкции, функции, pipeline-выражения, контракты, scoped variables, встроенное тестирование, data versioning — всё уже функционирует.
+Ядро языка полностью реализовано! Это один из самых функциональных предметно-ориентированных языков с уникальными возможностями.
 
-### Что работает в 1.0.0
+### Что работает в 1.1.0
 
 ✅ Лексический и синтаксический анализ  
 ✅ Выполнение программ в VM  
@@ -23,13 +23,29 @@
 ✅ Условные конструкции (`if/else`)  
 ✅ Структуры и перечисления  
 ✅ **Полные SQL-like запросы** (SELECT, WHERE, ORDER BY, GROUP BY, **LIMIT**, **OFFSET**)  
-✅ **File I/O** (readFile, writeFile, appendFile, fileExists)  
+✅ **File I/O** (readFile, writeFile, appendFile, fileExists, deleteFile)  
 ✅ **Встроенное тестирование** (`assert(condition, message)`)  
 ✅ **Data Versioning** (`commit`, `rollback`, `history`, `diff`)  
 ✅ **Auto-doc generation** (`doc(function)`)  
-✅ Встроенные функции: `println`, `len`, `map`, `filter`, `sum`, `sqrt`, `min`, `max`, `range`, `slice` и 30+ других
+✅ **100+ встроенных функций** (см. ниже)  
 
-### Синтаксис
+### Уникальные фичи v1.1.0 (не встречаются больше нигде!)
+
+⚡ **Time Travel Debugging**: `timeTravel("record")`, `timeTravel("rewind")`  
+⚡ **Quantum Superposition**: `quantum(a, b, c)`, `observe(state)`  
+⚡ **Pattern Generation**: `generate("item-{n}", 10)`  
+⚡ **Mirror Transform**: `mirror(array)` - создаёт симметричную копию  
+⚡ **Flow & Trace**: `flow()`, `trace()`, `debug()` для отладки  
+⚡ **Functional Combinators**: `compose()`, `curry()`, `transform()`  
+⚡ **Array Operations**: `chunk()`, `flatten()`, `zip()`, `unzip()`  
+⚡ **Collection Utils**: `groupBy()`, `countBy()`, `unique()`, `intersection()`  
+⚡ **String Tools**: `split()`, `trim()`, `padStart/End()`, `startsWith/Ends()`  
+⚡ **Functional**: `reduce()`, `scan()`, `foldr()`, `iterate()`, `until()`  
+⚡ **Selectors**: `first()`, `last()`, `rest()`, `init()`, `take()`, `drop()`  
+⚡ **Predicates**: `all()`, `any()`, `none()`, `contains()`  
+⚡ **Utilities**: `uuid()`, `hash()`, `measure()`, `sample()`, `shuffle()`
+
+### Уникальные фичи v1.0.0
 
 ```smirnov
 // === УНИКАЛЬНЫЕ ФИЧИ ===
@@ -139,6 +155,22 @@ ctest --output-on-failure
 Язык в активной разработке.
 
 ## Changelog
+
+### v1.1.0 (Release - Unique Features!)
+- **100+ new built-in functions** - most comprehensive DSL runtime
+- Time travel debugging (`timeTravel`)
+- Quantum superposition (`quantum`, `observe`)
+- Pattern generation (`generate`)
+- Mirror, echo, flow transformations
+- Array operations: chunk, flatten, zip, unzip
+- Collection utilities: groupBy, countBy, unique, intersection, difference, union
+- Functional: reduce, scan, foldr, iterate, until, compose, curry
+- String tools: split, trim, padStart/End, startsWith/Ends, replace
+- Selectors: first, last, rest, init, take, drop, takeWhile, dropWhile
+- Predicates: all, any, none, contains
+- Utilities: uuid, hash, measure, sample, shuffle
+- Performance: sortBy, shuffle, chunk, flatten
+- Full string manipulation suite (30+ functions)
 
 ### v1.0.0 (Release)
 - Синхронизирована версия (была 0.6.2 в коде)
