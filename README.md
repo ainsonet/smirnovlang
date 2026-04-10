@@ -11,7 +11,7 @@
 [![Release](https://img.shields.io/github/v/release/ainsonet/smirnovlang)](https://github.com/ainsonet/smirnovlang/releases)
 [![Features](https://img.shields.io/badge/features-100%2B-orange.svg)](#уникальные-фичи)
 
-[Сборка](#сборка) • [Примеры](#примеры) • [Вклад](CONTRIBUTING.md)
+[Сборка](#сборка) • [Примеры](#примеры) • [Вклад](CONTRIBUTING.md) • [Changelog](CHANGELOG.md)
 
 </div>
 
@@ -288,6 +288,8 @@ ctest --output-on-failure
 
 ## 📝 Changelog
 
+Полный список изменений см. в [CHANGELOG.md](CHANGELOG.md)
+
 ### v1.1.0 (Release - Unique Features!)
 
 ### v1.0.0 (Release)
@@ -295,8 +297,6 @@ ctest --output-on-failure
 ### v0.8.0
 
 ### v0.6.2
-
-Подробно в [CHANGELOG](CHANGELOG.md)
 
 ---
 
