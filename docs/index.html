@@ -3,26 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Документация — SmirnovLang</title>
-    <meta name="description" content="Полная документация языка SmirnovLang: синтаксис, API, примеры использования">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="./css/docs.css">
+    <title>SmirnovLang — Современный язык программирования</title>
+    <meta name="description" content="Современный язык программирования с инновационными возможностями: SQL-запросы, контракты, time travel debugging и 100+ встроенных функций">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
-                <a href="../index.html" style="text-decoration: none; color: inherit;">
-                    <img src="../logo.png" alt="Logo" class="nav-logo">
-                    <span class="brand-name">SmirnovLang</span>
-                </a>
+                <img src="logo.png" alt="Logo" class="nav-logo">
+                <span class="brand-name">SmirnovLang</span>
             </div>
             <ul class="nav-menu">
-                <li><a href="../index.html#features" class="nav-link">Возможности</a></li>
-                <li><a href="../index.html#examples" class="nav-link">Примеры</a></li>
-                <li><a href="#" class="nav-link active">Документация</a></li>
-                <li><a href="../index.html#download" class="nav-link">Скачать</a></li>
+                <li><a href="#features" class="nav-link">Возможности</a></li>
+                <li><a href="#examples" class="nav-link">Примеры</a></li>
+                <li><a href="docs/index.html" class="nav-link">Документация</a></li>
+                <li><a href="#download" class="nav-link">Скачать</a></li>
                 <li><a href="https://github.com/ainsonet/smirnovlang" target="_blank" class="nav-link nav-github">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                         <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
@@ -30,274 +28,261 @@
                     GitHub
                 </a></li>
             </ul>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
-    <!-- Docs Container -->
-    <div class="docs-container">
-        <!-- Sidebar -->
-        <aside class="docs-sidebar">
-            <div class="docs-nav">
-                <h3>Начало работы</h3>
-                <ul>
-                    <li><a href="#introduction" class="active">Введение</a></li>
-                    <li><a href="#installation">Установка</a></li>
-                    <li><a href="#quickstart">Быстрый старт</a></li>
-                </ul>
-
-                <h3>Синтаксис</h3>
-                <ul>
-                    <li><a href="#variables">Переменные</a></li>
-                    <li><a href="#types">Типы данных</a></li>
-                    <li><a href="#functions">Функции</a></li>
-                    <li><a href="#control-flow">Управление потоком</a></li>
-                    <li><a href="#pattern-matching">Pattern Matching</a></li>
-                </ul>
-
-                <h3>Уникальные фичи</h3>
-                <ul>
-                    <li><a href="#contracts">Контракты</a></li>
-                    <li><a href="#pipeline">Pipeline</a></li>
-                    <li><a href="#sql-queries">SQL-запросы</a></li>
-                    <li><a href="#data-versioning">Data Versioning</a></li>
-                    <li><a href="#time-travel">Time Travel</a></li>
-                </ul>
-
-                <h3>API Reference</h3>
-                <ul>
-                    <li><a href="#builtins">Встроенные функции</a></li>
-                    <li><a href="#stdlib">Стандартная библиотека</a></li>
-                </ul>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">SmirnovLang</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Современный язык программирования с инновационными возможностями
+                </p>
+                <div class="hero-features">
+                    <span class="feature-badge">✅ SQL-запросы</span>
+                    <span class="feature-badge">✅ Контракты</span>
+                    <span class="feature-badge">✅ 100+ функций</span>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#download" class="btn btn-primary">Начать работу</a>
+                    <a href="#examples" class="btn btn-secondary">Смотреть примеры</a>
+                </div>
             </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="docs-content">
-            <article>
-                <h1 id="introduction">Введение в SmirnovLang</h1>
-                <p class="lead">SmirnovLang — это современный язык программирования с инновационными возможностями, созданный для быстрой разработки и выражения идей в коде.</p>
-
-                <h2>Почему SmirnovLang?</h2>
-                <ul>
-                    <li><strong>Современный синтаксис</strong> — чистый и выразительный</li>
-                    <li><strong>Встроенные фичи</strong> — SQL-запросы, контракты, тестирование</li>
-                    <li><strong>100+ функций</strong> — всё, что нужно, уже есть</li>
-                    <li><strong>Уникальные возможности</strong> — time travel debugging, квантовые вычисления</li>
-                    <li><strong>Простота</strong> — легко выучить, приятно использовать</li>
-                </ul>
-
-                <h2 id="installation">Установка</h2>
-                <h3>Windows</h3>
-                <pre><code class="language-powershell"># Через инсталлятор
-# Скачайте с https://github.com/ainsonet/smirnovlang/releases
-
-# Или через Chocolatey
-choco install smirnovlang</code></pre>
-
-                <h3>Linux/macOS</h3>
-                <pre><code class="language-bash"># Клонировать репозиторий
-git clone https://github.com/ainsonet/smirnovlang.git
-cd smirnovlang
-
-# Собрать
-mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-make -j$(nproc)</code></pre>
-
-                <h2 id="quickstart">Быстрый старт</h2>
-                <p>Создайте файл <code>hello.smirnov</code>:</p>
-                <pre><code class="language-smirnov"><span class="code-keyword">fn</span> <span class="code-function">main</span>() {
-    <span class="code-keyword">let</span> name = <span class="code-string">"World"</span>;
-    <span class="code-function">println</span>(<span class="code-string">"Hello, "</span> + name + <span class="code-string">"!"</span>);
+            <div class="hero-code">
+                <div class="code-window">
+                    <div class="code-header">
+                        <span class="code-dot red"></span>
+                        <span class="code-dot yellow"></span>
+                        <span class="code-dot green"></span>
+                        <span class="code-title">hello.smirnov</span>
+                    </div>
+                    <pre class="code-content"><code><span class="code-comment">// Hello World на SmirnovLang</span>
+<span class="code-keyword">fn</span> <span class="code-function">main</span>() {
+    <span class="code-keyword">let</span> greeting = <span class="code-string">"Привет, SmirnovLang!"</span>;
+    <span class="code-function">println</span>(greeting);
 }</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <p>Запустите:</p>
-                <pre><code class="language-bash">smirnovLang hello.smirnov</code></pre>
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Уникальные возможности</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>SQL-подобные запросы</h3>
+                    <p>SELECT, WHERE, ORDER BY прямо в коде. Фильтрация данных без лишних библиотек.</p>
+                    <pre><code><span class="code-keyword">let</span> adults = <span class="code-keyword">select</span> * <span class="code-keyword">from</span> users 
+              <span class="code-keyword">where</span> age > 18</code></pre>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📜</div>
+                    <h3>Контракты</h3>
+                    <p>require, ensure с авто-исправлением. Гарантии корректности кода.</p>
+                    <pre><code><span class="code-keyword">fn</span> <span class="code-function">divide</span>(a, b)
+  <span class="code-keyword">require</span> b != 0, <span class="code-string">"Cannot divide by zero"</span>
+{ <span class="code-keyword">return</span> a / b; }</code></pre>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Time Travel</h3>
+                    <p>Отладка с путешествиями во времени. Записывай состояния и возвращайся назад.</p>
+                    <pre><code><span class="code-function">timeTravel</span>(<span class="code-string">"record"</span>);
+<span class="code-function">timeTravel</span>(<span class="code-string">"rewind"</span>);</code></pre>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>Data Versioning</h3>
+                    <p>commit, rollback, history. Версионирование данных встроенное.</p>
+                    <pre><code><span class="code-function">commit</span>(data, <span class="code-string">"v1"</span>);
+<span class="code-keyword">let</span> restored = <span class="code-function">rollback</span>(<span class="code-string">"v1"</span>);</code></pre>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>100+ функций</h3>
+                    <p>map, filter, reduce, и ещё 97+ функций. Всё встроенное, ничего качать не нужно.</p>
+                    <pre><code>data 
+  |> <span class="code-function">filter</span>(x => x > 0)
+  |> <span class="code-function">map</span>(x => x * 2)
+  |> <span class="code-function">sum</span>()</code></pre>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧪</div>
+                    <h3>Тестирование</h3>
+                    <p>Встроенное assert. Писать тесты так же просто, как писать код.</p>
+                    <pre><code><span class="code-function">assert</span>(add(2, 3) == 5, 
+       <span class="code-string">"2 + 3 should be 5"</span>);</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <h2 id="variables">Переменные</h2>
-                <pre><code class="language-smirnov"><span class="code-comment">// Неизменяемая переменная</span>
-<span class="code-keyword">let</span> x = 42;
-
-<span class="code-comment// Изменяемая переменная</span>
-<span class="code-keyword">mut</span> y = 10;
-y = 20;
-
-<span class="code-comment">// Scoped variable (исчезает после блока)</span>
-{
-    <span class="code-keyword">let!</span> temp = 100;
-    <span class="code-function">println</span>(temp); <span class="code-comment">// 100</span>
-}
-<span class="code-comment">// temp здесь не определён</span></code></pre>
-
-                <h2 id="types">Типы данных</h2>
-                <pre><code class="language-smirnov"><span class="code-comment">// Базовые типы</span>
-<span class="code-keyword">let</span> integer: <span class="code-type">int</span> = 42;
-<span class="code-keyword">let</span> floating: <span class="code-type">f64</span> = 3.14;
-<span class="code-keyword">let</span> text: <span class="code-type">string</span> = <span class="code-string">"Hello"</span>;
-<span class="code-keyword">let</span> flag: <span class="code-type">bool</span> = <span class="code-keyword">true</span>;
-
-<span class="code-comment">// Массивы</span>
-<span class="code-keyword">let</span> numbers = [1, 2, 3, 4, 5];
-
-<span class="code-comment">// Структуры</span>
-<span class="code-keyword">struct</span> Point {
-    x: <span class="code-type">f64</span>,
-    y: <span class="code-type">f64</span>,
-}
-
-<span class="code-keyword">let</span> p = Point { x: 10, y: 20 };</code></pre>
-
-                <h2 id="functions">Функции</h2>
-                <pre><code class="language-smirnov"><span class="code-comment">// Базовая функция</span>
-<span class="code-keyword">fn</span> <span class="code-function">add</span>(a: <span class="code-type">int</span>, b: <span class="code-type">int</span>) -> <span class="code-type">int</span> {
-    <span class="code-keyword">return</span> a + b;
-}
-
-<span class="code-comment">// Функция с контрактами</span>
-<span class="code-keyword">fn</span> <span class="code-function">divide</span>(a: <span class="code-type">f64</span>, b: <span class="code-type">f64</span>) -> <span class="code-type">f64</span>
-    <span class="code-keyword">require</span> b != 0, <span class="code-string">"b cannot be zero"</span>
-    <span class="code-keyword">ensure</span> result >= 0, <span class="code-string">"result must be non-negative"</span>
-{
-    <span class="code-keyword">return</span> a / b;
-}
-
-<span class="code-comment">// Lambda-выражения</span>
-<span class="code-keyword">let</span> multiply = |x, y| -> x * y;
-<span class="code-keyword">let</span> result = multiply(5, 3);</code></pre>
-
-                <h2 id="control-flow">Управление потоком</h2>
-                <pre><code class="language-smirnov"><span class="code-comment">// Условные выражения</span>
-<span class="code-keyword">if</span> x > 10 {
-    <span class="code-function">println</span>(<span class="code-string">"Greater than 10"</span>);
-} <span class="code-keyword">else if</span> x == 10 {
-    <span class="code-function">println</span>(<span class="code-string">"Equals 10"</span>);
-} <span class="code-keyword">else</span> {
-    <span class="code-function">println</span>(<span class="code-string">"Less than 10"</span>);
-}
-
-<span class="code-comment">// Циклы</span>
-<span class="code-keyword">for</span> i <span class="code-keyword">in</span> 0..10 {
-    <span class="code-function">println</span>(i);
-}
-
-<span class="code-keyword">while</span> condition {
-    <span class="code-comment">// ...</span>
+    <!-- Examples Section -->
+    <section id="examples" class="examples">
+        <div class="container">
+            <h2 class="section-title">Примеры кода</h2>
+            <div class="examples-tabs">
+                <button class="tab-btn active" data-tab="pipeline">Pipeline</button>
+                <button class="tab-btn" data-tab="pattern">Pattern Matching</button>
+                <button class="tab-btn" data-tab="quantum">Quantum</button>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="pipeline">
+                    <div class="code-window large">
+                        <div class="code-header">
+                            <span class="code-dot red"></span>
+                            <span class="code-dot yellow"></span>
+                            <span class="code-dot green"></span>
+                            <span class="code-title">pipeline.smirnov</span>
+                        </div>
+                        <pre class="code-content"><code><span class="code-keyword">fn</span> <span class="code-function">main</span>() {
+    <span class="code-keyword">let</span> numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    
+    <span class="code-comment">// Pipeline-выражения</span>
+    <span class="code-keyword">let</span> result = numbers
+        |> <span class="code-function">filter</span>(x => x % 2 == 0)
+        |> <span class="code-function">map</span>(x => x * 2)
+        |> <span class="code-function">sum</span>();
+    
+    <span class="code-function">println</span>(<span class="code-string">"Sum of doubled evens:"</span>, result);
+    <span class="code-comment">// Output: Sum of doubled evens: 60</span>
 }</code></pre>
-
-                <h2 id="pattern-matching">Pattern Matching</h2>
-                <pre><code class="language-smirnov"><span class="code-keyword">fn</span> <span class="code-function">describe</span>(value: <span class="code-type">int</span>) -> <span class="code-type">string</span> {
-    <span class="code-keyword">match</span> value {
+                    </div>
+                </div>
+                <div class="tab-pane" id="pattern">
+                    <div class="code-window large">
+                        <div class="code-header">
+                            <span class="code-dot red"></span>
+                            <span class="code-dot yellow"></span>
+                            <span class="code-dot green"></span>
+                            <span class="code-title">pattern.smirnov</span>
+                        </div>
+                        <pre class="code-content"><code><span class="code-keyword">fn</span> <span class="code-function">describeNumber</span>(n: <span class="code-type">int</span>) -> <span class="code-type">string</span> {
+    <span class="code-keyword">match</span> n {
         0 -> <span class="code-string">"zero"</span>,
-        1 | 2 | 3 -> <span class="code-string">"small"</span>,
-        n <span class="code-keyword">if</span> n > 100 -> <span class="code-string">"large"</span>,
-        _ -> <span class="code-string">"medium"</span>
+        1 -> <span class="code-string">"one"</span>,
+        2 -> <span class="code-string">"two"</span>,
+        _ -> <span class="code-string">"many"</span>
     }
+}
+
+<span class="code-keyword">fn</span> <span class="code-function">main</span>() {
+    <span class="code-keyword">let</span> desc = <span class="code-function">describeNumber</span>(5);
+    <span class="code-function">println</span>(<span class="code-string">"5 is:"</span>, desc);
 }</code></pre>
-
-                <h2 id="contracts">Контракты</h2>
-                <p>Контракты обеспечивают корректность функций через пред- и постусловия:</p>
-                <pre><code class="language-smirnov"><span class="code-keyword">fn</span> <span class="code-function">calculate</span>(x: <span class="code-type">f64</span>) -> <span class="code-type">f64</span>
-    <span class="code-keyword">require</span> x > 0, <span class="code-string">"x must be positive"</span>
-    <span class="code-keyword">ensure</span> result > 0, <span class="code-string">"result must be positive"</span>
-    <span class="code-keyword">fix</span>: <span class="code-function">abs</span>(result)
-{
-    <span class="code-keyword">return</span> x * 2;
+                    </div>
+                </div>
+                <div class="tab-pane" id="quantum">
+                    <div class="code-window large">
+                        <div class="code-header">
+                            <span class="code-dot red"></span>
+                            <span class="code-dot yellow"></span>
+                            <span class="code-dot green"></span>
+                            <span class="code-title">quantum.smirnov</span>
+                        </div>
+                        <pre class="code-content"><code><span class="code-keyword">fn</span> <span class="code-function">main</span>() {
+    <span class="code-comment">// Создаем суперпозицию состояний</span>
+    <span class="code-keyword">let</span> quantumState = <span class="code-function">quantum</span>(42, <span class="code-string">"hello"</span>, 3.14);
+    
+    <span class="code-comment">// Наблюдаем (коллапсируем)</span>
+    <span class="code-keyword">let</span> observed = <span class="code-function">observe</span>(quantumState);
+    <span class="code-function">println</span>(<span class="code-string">"Observed:"</span>, observed);
 }</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <h2 id="pipeline">Pipeline</h2>
-                <pre><code class="language-smirnov"><span class="code-comment">// Pipeline-выражения для читаемости</span>
-<span class="code-keyword">let</span> result = [1, 2, 3, 4, 5]
-    |> <span class="code-function">filter</span>(x => x % 2 == 0)
-    |> <span class="code-function">map</span>(x => x * 2)
-    |> <span class="code-function">sum</span>();
+    <!-- Download Section -->
+    <section id="download" class="download">
+        <div class="container">
+            <h2 class="section-title">Начните сейчас</h2>
+            <p class="download-subtitle">Установите SmirnovLang на свой компьютер</p>
+            <div class="download-options">
+                <div class="download-card">
+                    <div class="download-icon">🪟</div>
+                    <h3>Windows</h3>
+                    <p>Скомпилируйте из исходников</p>
+                    <a href="https://github.com/ainsonet/smirnovlang" class="btn btn-secondary">GitHub</a>
+                    <p class="download-note">Visual Studio 2019+ или MinGW</p>
+                </div>
+                <div class="download-card">
+                    <div class="download-icon">🐧</div>
+                    <h3>Linux</h3>
+                    <p>Скомпилируйте из исходников</p>
+                    <a href="https://github.com/ainsonet/smirnovlang" class="btn btn-secondary">GitHub</a>
+                    <p class="download-note">CMake 3.15+ и C++20</p>
+                </div>
+                <div class="download-card">
+                    <div class="download-icon">🍎</div>
+                    <h3>macOS</h3>
+                    <p>Скомпилируйте из исходников</p>
+                    <a href="https://github.com/ainsonet/smirnovlang" class="btn btn-secondary">GitHub</a>
+                    <p class="download-note">Xcode 13+ или Clang 13+</p>
+                </div>
+            </div>
+            <div class="quick-start">
+                <h3>Быстрый старт</h3>
+                <pre><code><span class="code-comment"># Windows (PowerShell)</span>
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release
 
-<span class="code-comment">// Эквивалентно:</span>
-<span class="code-keyword">let</span> result = <span class="code-function">sum</span>(<span class="code-function">map</span>(<span class="code-function">filter</span>([1, 2, 3, 4, 5], x => x % 2 == 0), x => x * 2));</code></pre>
+<span class="code-comment"># Запуск примера</span>
+.\Release\smirnovLang.exe examples\hello.smirnov</code></pre>
+            </div>
+        </div>
+    </section>
 
-                <h2 id="sql-queries">SQL-подобные запросы</h2>
-                <pre><code class="language-smirnov"><span class="code-keyword">let</span> users = [
-    {name: <span class="code-string">"Alice"</span>, age: 25},
-    {name: <span class="code-string">"Bob"</span>, age: 17},
-    {name: <span class="code-string">"Charlie"</span>, age: 30}
-];
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <img src="logo.png" alt="Logo" class="footer-logo">
+                        <h4>SmirnovLang</h4>
+                    </div>
+                    <p>Современный язык программирования с инновационными возможностями</p>
+                    <p class="version">v1.2.0</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Ресурсы</h4>
+                    <ul>
+                        <li><a href="#docs">Документация</a></li>
+                        <li><a href="#examples">Примеры</a></li>
+                        <li><a href="https://github.com/ainsonet/smirnovlang">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Сообщество</h4>
+                    <ul>
+                        <li><a href="https://github.com/ainsonet/smirnovlang/issues">Issues</a></li>
+                        <li><a href="https://github.com/ainsonet/smirnovlang/discussions">Discussions</a></li>
+                        <li><a href="CONTRIBUTING.md">Вклад</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Дмитрий Смирнов. MIT License.</p>
+                <p>Разработано с ❤️ для сообщества</p>
+            </div>
+        </div>
+    </footer>
 
-<span class="code-comment// Фильтрация и сортировка</span>
-<span class="code-keyword">let</span> adults = <span class="code-keyword">select</span> * <span class="code-keyword">from</span> users 
-              <span class="code-keyword">where</span> age > 18 
-              <span class="code-keyword">order by</span> name;
-
-<span class="code-comment">// Выборка полей с LIMIT</span>
-<span class="code-keyword">let</span> names = <span class="code-keyword">select</span> name <span class="code-keyword">from</span> users 
-             <span class="code-keyword">limit</span> 2 <span class="code-keyword">offset</span> 0;</code></pre>
-
-                <h2 id="data-versioning">Data Versioning</h2>
-                <pre><code class="language-smirnov"><span class="code-keyword">let</span> data = {x: 10, y: 20};
-
-<span class="code-comment">// Сохраняем версию</span>
-<span class="code-function">commit</span>(data, <span class="code-string">"v1"</span>);
-
-<span class="code-comment">// Модифицируем</span>
-data.x = 100;
-<span class="code-function">commit</span>(data, <span class="code-string">"v2"</span>);
-
-<span class="code-comment">// Восстанавливаем</span>
-<span class="code-keyword">let</span> restored = <span class="code-function">rollback</span>(<span class="code-string">"v1"</span>);
-
-<span class="code-comment">// Смотрим историю</span>
-<span class="code-function">history</span>(<span class="code-string">"v1"</span>);
-
-<span class="code-comment">// Сравниваем версии</span>
-<span class="code-function">diff</span>(<span class="code-function">rollback</span>(<span class="code-string">"v1"</span>), <span class="code-function">rollback</span>(<span class="code-string">"v2"</span>));</code></pre>
-
-                <h2 id="time-travel">Time Travel Debugging</h2>
-                <pre><code class="language-smirnov"><span class="code-keyword">let</span> data = [1, 2, 3, 4, 5];
-
-<span class="code-comment">// Создаем контрольные точки</span>
-<span class="code-function">timeTravel</span>(<span class="code-string">"record"</span>);
-<span class="code-keyword">let</span> modified = data |> <span class="code-function">map</span>(x => x * 2);
-<span class="code-function">timeTravel</span>(<span class="code-string">"record"</span>);
-
-<span class="code-comment">// Возвращаемся назад</span>
-<span class="code-function">timeTravel</span>(<span class="code-string">"rewind"</span>);
-
-<span class="code-comment">// Проверяем timeline</span>
-<span class="code-keyword">let</span> checkpoints = <span class="code-function">timeTravel</span>(<span class="code-string">"timeline"</span>);</code></pre>
-
-                <h2 id="builtins">Встроенные функции</h2>
-                <p>Более 100 встроенных функций:</p>
-                <h3>Основные</h3>
-                <ul>
-                    <li><code>print()</code>, <code>println()</code> — вывод</li>
-                    <li><code>len()</code>, <code>type()</code> — информация о значениях</li>
-                    <li><code>toInt()</code>, <code>toFloat()</code>, <code>toString()</code> — конвертация</li>
-                </ul>
-
-                <h3>Математика</h3>
-                <ul>
-                    <li><code>sqrt()</code>, <code>pow()</code>, <code>abs()</code>, <code>min()</code>, <code>max()</code></li>
-                    <li><code>sin()</code>, <code>cos()</code>, <code>tan()</code> — тригонометрия</li>
-                </ul>
-
-                <h3>Массивы</h3>
-                <ul>
-                    <li><code>map()</code>, <code>filter()</code>, <code>reduce()</code>, <code>sum()</code></li>
-                    <li><code>push()</code>, <code>reverse()</code>, <code>slice()</code>, <code>chunk()</code></li>
-                    <li><code>first()</code>, <code>last()</code>, <code>take()</code>, <code>drop()</code></li>
-                </ul>
-
-                <h3>Строки</h3>
-                <ul>
-                    <li><code>split()</code>, <code>trim()</code>, <code>join()</code>, <code>concat()</code></li>
-                    <li><code>replace()</code>, <code>substring()</code></li>
-                </ul>
-
-                <h2 id="stdlib">Стандартная библиотека</h2>
-                <p>Для получения актуальной информации см. исходный код в репозитории:</p>
-                <p><a href="https://github.com/ainsonet/smirnovlang/tree/master/src/runtime" class="btn btn-secondary">Посмотреть на GitHub</a></p>
-            </article>
-        </main>
-    </div>
-
-    <script src="js/docs.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
