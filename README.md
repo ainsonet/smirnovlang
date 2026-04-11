@@ -1,4 +1,4 @@
-# SmirnovLang
+# <a href="https://ainsonet.github.io/smirnovlang/">SmirnovLang</a>
 
 <div align="center">
 
@@ -11,12 +11,11 @@
 [![Release](https://img.shields.io/github/v/release/ainsonet/smirnovlang)](https://github.com/ainsonet/smirnovlang/releases)
 [![Features](https://img.shields.io/badge/features-100%2B-orange.svg)](#уникальные-фичи)
 
-[Сборка](#сборка) • [Примеры](#примеры) • [Вклад](CONTRIBUTING.md) • [Changelog](CHANGELOG.md)
+🌐 [Официальный сайт](https://ainsonet.github.io/smirnovlang/) • [Сборка](#сборка) • [Примеры](#примеры) • [Вклад](CONTRIBUTING.md) • [Changelog](CHANGELOG.md)
 
 </div>
 
 ---
-
 
 ## 🚀 Статус: **Релиз v1.1.0**
 
@@ -56,9 +55,82 @@
 ### Hello World
 
 ```smirnov
+// SmirnovLang example - Hello World
+
+// Basic function with type annotation
+fn greet(name: string) -> string {
+    return "Hello, " + name + "!";
+}
+
+// Function with contracts
+fn divide(a: f64, b: f64) -> f64
+    require b != 0, "Division by zero"
+    ensure result => result * b == a
+{
+    return a / b;
+}
+
+// Pattern matching
+fn describeNumber(n: int) -> string {
+    match n {
+        0 -> "zero",
+        1 -> "one",
+        2 -> "two",
+        _ -> "many"
+    }
+}
+
+// Using pipes (pipeline)
+fn processData() {
+    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    
+    // Filter even numbers and double them
+    let result = numbers
+        |> filter(x => x % 2 == 0)
+        |> map(x => x * 2)
+        |> sum();
+    
+    println("Sum of doubled evens: " + result);
+}
+
+// Struct example
+struct Point {
+    x: f64,
+    y: f64,
+}
+
+fn distance(p1: Point, p2: Point) -> f64 {
+    let dx = p2.x - p1.x;
+    let dy = p2.y - p1.y;
+    return (dx * dx + dy * dy) |> sqrt();
+}
+
+// Main entry point
 fn main() {
-    let greeting = "Привет, SmirnovLang!";
+    println("=== SmirnovLang Demo ===");
+    
+    // Basic function call
+    let greeting = greet("World");
     println(greeting);
+    
+    // Division with contract
+    let result = divide(10, 2);
+    println("10 / 2 = " + result);
+    
+    // Pattern matching
+    let desc = describeNumber(5);
+    println("5 is: " + desc);
+    
+    // Process data with pipes
+    processData();
+    
+    // Struct usage
+    let p1 = Point { x: 0, y: 0 };
+    let p2 = Point { x: 3, y: 4 };
+    let dist = distance(p1, p2);
+    println("Distance: " + dist);
+    
+    println("Done!");
 }
 ```
 
@@ -200,13 +272,13 @@ fn main() {
 
 ```bash
 git clone https://github.com/ainsonet/smirnovlang.git
-cd smirnovlang/SmirnovLang
+cd smirnovlang
 mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j$(nproc)
 ```
 
-### Windows (PowerShell)
+### Windows
 
 ```powershell
 git clone https://github.com/ainsonet/smirnovlang.git
@@ -290,9 +362,7 @@ ctest --output-on-failure
 
 Полный список изменений см. в [CHANGELOG.md](CHANGELOG.md)
 
-### v1.1.0 (Release - Unique Features!)
-
-### v1.0.0 (Release)
+### v1.1.0 (Release)
 
 ### v0.8.0
 
@@ -317,4 +387,3 @@ MIT License - см. [LICENSE](LICENSE)
 ## ⭐ Звёздочка!
 
 Если проект вам нравится, поставьте звёздочку ⭐ на GitHub!
-
