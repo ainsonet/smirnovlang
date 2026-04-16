@@ -1,56 +1,52 @@
 # <a href="https://ainsonet.github.io/smirnovlang/">SmirnovLang</a>
 
-<div align="center">
-
-<img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/master/logo.png" alt="SmirnovLang Logo" width="200"/>
-
-**Современный язык программирования с инновационными возможностями**
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![C++20](https://img.shields.io/badge/C%2B%2B-20-green.svg)](https://isocpp.org/)
 [![Release](https://img.shields.io/github/v/release/ainsonet/smirnovlang)](https://github.com/ainsonet/smirnovlang/releases)
 [![Features](https://img.shields.io/badge/features-100%2B-orange.svg)](#уникальные-фичи)
 
-🌐 [Официальный сайт](https://ainsonet.github.io/smirnovlang/) • [Сборка](#сборка) • [Примеры](#примеры) • [Вклад](CONTRIBUTING.md) • [Changelog](CHANGELOG.md)
+Современный язык программирования с инновационными возможностями.
 
-</div>
+<img src="https://raw.githubusercontent.com/ainsonet/smirnovlang/master/logo.png" alt="SmirnovLang Logo" width="200"/>
+
+[Официальный сайт](https://ainsonet.github.io/smirnovlang/) • [Примеры](#примеры) • [Вклад](CONTRIBUTING.md) • [Changelog](CHANGELOG.md)
 
 ---
 
-## 🚀 Статус: **Релиз v1.1.0**
+## Статус: Релиз v1.1.0
 
 Ядро языка полностью реализовано! Это один из самых функциональных предметно-ориентированных языков с уникальными возможностями.
 
 **Готов к использованию в:**
-- ✅ Образовательных целях
-- ✅ Прототипировании
-- ✅ Исследованиях
-- ✅ Scripting-задачах
+- Образовательных целях
+- Прототипировании
+- Исследованиях
+- Scripting-задачах
 
 ### Что работает в 1.1.0
 
-✅ Лексический и синтаксический анализ  
-✅ Выполнение программ в VM  
-✅ Переменные (`let`, `mut`)  
-✅ Scoped variables (`let!`) — исчезают после блока  
-✅ Функции с аннотациями типов  
-✅ Контракты (`require`, `ensure`, `fix`)  
-✅ Auto-memoization (`memo fn`)  
-✅ Pipeline-выражения (`|>`)  
-✅ Pattern matching  
-✅ Циклы (`for`, `while`)  
-✅ Условные конструкции (`if/else`)  
-✅ Структуры и перечисления  
-✅ **Полные SQL-like запросы** (SELECT, WHERE, ORDER BY, GROUP BY, **LIMIT**, **OFFSET**)  
-✅ **File I/O** (readFile, writeFile, appendFile, fileExists, deleteFile)  
-✅ **Встроенное тестирование** (`assert(condition, message)`)  
-✅ **Data Versioning** (`commit`, `rollback`, `history`, `diff`)  
-✅ **Auto-doc generation** (`doc(function)`)  
-✅ **100+ встроенных функций** (см. ниже)  
+- Лексический и синтаксический анализ  
+- Выполнение программ в VM  
+- Переменные (`let`, `mut`)  
+- Scoped variables (`let!`) — исчезают после блока  
+- Функции с аннотациями типов  
+- Контракты (`require`, `ensure`, `fix`)  
+- Auto-memoization (`memo fn`)  
+- Pipeline-выражения (`|>`)  
+- Pattern matching  
+- Циклы (`for`, `while`)  
+- Условные конструкции (`if/else`)  
+- Структуры и перечисления  
+- Полные SQL-like запросы (SELECT, WHERE, ORDER BY, GROUP BY, LIMIT, OFFSET)  
+- File I/O** (readFile, writeFile, appendFile, fileExists, deleteFile)  
+- Встроенное тестирование (`assert(condition, message)`)  
+- Data Versioning (`commit`, `rollback`, `history`, `diff`)  
+- Auto-doc generation (`doc(function)`)  
+- 100+ встроенных функций (см. ниже)  
 
 ---
 
-## 💡 Примеры
+## Примеры
 
 ### Hello World
 
@@ -266,7 +262,7 @@ fn main() {
 
 ---
 
-## 🛠 Сборка
+## Сборка
 
 ### Linux/macOS
 
@@ -289,7 +285,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build . --config Release
 ```
 
-## 🚀 Запуск
+## Запуск
 
 ```bash
 # Hello World
@@ -302,7 +298,7 @@ cmake --build . --config Release
 ./build/smirnovLang --repl
 ```
 
-## 🧪 Тесты
+## Тесты
 
 ```bash
 cd build
@@ -311,7 +307,7 @@ ctest --output-on-failure
 
 ---
 
-## 📊 Встроенные функции
+## Встроенные функции
 
 ### Основные
 - `print`, `println` - вывод
@@ -352,13 +348,13 @@ ctest --output-on-failure
 
 ---
 
-## 🤝 Вклад
+## Вклад
 
 См. [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
-## 📝 Changelog
+## Changelog
 
 Полный список изменений см. в [CHANGELOG.md](CHANGELOG.md)
 
@@ -370,20 +366,18 @@ ctest --output-on-failure
 
 ---
 
-## 📄 Лицензия
+## Лицензия
 
 MIT License - см. [LICENSE](LICENSE)
 
 ---
 
-## 👨‍💻 Автор
+## Автор
 
-**Дмитрий Смирнов**
-
-Разработано в одиночку с ❤️ для сообщества
+Дмитрий Смирнов
 
 ---
 
-## ⭐ Звёздочка!
+## Звёздочка!
 
-Если проект вам нравится, поставьте звёздочку ⭐ на GitHub!
+Если проект вам нравится, поставьте звёздочку на GitHub!
